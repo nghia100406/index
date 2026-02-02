@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI GuardBot - Robot Trông Nhà Thông Minh</title>
+    <title>AI GuardBot - Robot Phát Hiện Người Lạ & Giám Sát Điều Khiển</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ========== CSS CHO AI GUARDBOT - GỘP TẤT CẢ HIỆU ỨNG ========== */
@@ -13,6 +13,7 @@
             --secondary-color: #34a853;
             --accent-color: #ea4335;
             --warning-color: #f9ab00;
+            --danger-color: #d93025;
             --dark-color: #202124;
             --light-color: #f8f9fa;
             --gray-color: #5f6368;
@@ -276,6 +277,14 @@
             background-color: #2d9951;
         }
         
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+        
         .hero-image {
             position: relative;
             text-align: center;
@@ -493,27 +502,27 @@
             transform: scale(1.1);
         }
         
-        /* ========== HOW IT WORKS SECTION ========== */
-        .how-it-works {
+        /* ========== STRANGER DETECTION SECTION ========== */
+        .stranger-detection {
             padding: 80px 0;
             background-color: #f8f9fa;
             position: relative;
             overflow: hidden;
         }
         
-        .how-it-works::before {
+        .stranger-detection::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100" stroke="rgba(26, 115, 232, 0.05)" stroke-width="1"/><path d="M100,0 L0,100" stroke="rgba(26, 115, 232, 0.05)" stroke-width="1"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100" stroke="rgba(234, 67, 53, 0.05)" stroke-width="1"/><path d="M100,0 L0,100" stroke="rgba(234, 67, 53, 0.05)" stroke-width="1"/></svg>');
             opacity: 0.5;
             z-index: 0;
         }
         
-        .steps {
+        .detection-process {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
@@ -522,7 +531,7 @@
             z-index: 1;
         }
         
-        .step {
+        .detection-step {
             flex: 1;
             min-width: 250px;
             text-align: center;
@@ -531,19 +540,19 @@
             animation: fadeInUp 0.8s ease-out backwards;
         }
         
-        .step:nth-child(1) { animation-delay: 0.1s; }
-        .step:nth-child(2) { animation-delay: 0.3s; }
-        .step:nth-child(3) { animation-delay: 0.5s; }
-        .step:nth-child(4) { animation-delay: 0.7s; }
+        .detection-step:nth-child(1) { animation-delay: 0.1s; }
+        .detection-step:nth-child(2) { animation-delay: 0.3s; }
+        .detection-step:nth-child(3) { animation-delay: 0.5s; }
+        .detection-step:nth-child(4) { animation-delay: 0.7s; }
         
-        .step:not(:last-child)::after {
+        .detection-step:not(:last-child)::after {
             content: "";
             position: absolute;
             top: 40px;
             right: 0;
             width: 100%;
             height: 2px;
-            background-color: var(--primary-color);
+            background-color: var(--accent-color);
             z-index: 1;
             animation: drawLine 1.5s ease-out forwards;
             transform-origin: left center;
@@ -554,10 +563,10 @@
             to { transform: scaleX(1); }
         }
         
-        .step-number {
+        .detection-number {
             width: 80px;
             height: 80px;
-            background-color: var(--primary-color);
+            background-color: var(--accent-color);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -569,25 +578,25 @@
             position: relative;
             z-index: 2;
             transition: all var(--transition-fast);
-            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+            box-shadow: 0 5px 15px rgba(234, 67, 53, 0.3);
         }
         
-        .step:hover .step-number {
-            background-color: var(--secondary-color);
+        .detection-step:hover .detection-number {
+            background-color: var(--danger-color);
             transform: scale(1.1) rotate(10deg);
         }
         
-        .step h3 {
+        .detection-step h3 {
             font-size: 22px;
             margin-bottom: 15px;
             color: var(--dark-color);
         }
         
-        .step p {
+        .detection-step p {
             margin-bottom: 20px;
         }
         
-        .step-image {
+        .detection-image {
             width: 100%;
             height: 180px;
             border-radius: 8px;
@@ -599,25 +608,318 @@
             transition: transform var(--transition-fast);
         }
         
-        .step-image:hover {
+        .detection-image:hover {
             transform: translateY(-5px);
         }
         
-        .step-image img {
+        .detection-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform var(--transition-medium);
         }
         
-        .step-image:hover img {
+        .detection-image:hover img {
             transform: scale(1.1);
+        }
+        
+        /* Phần hình ảnh phát hiện người lạ đặc biệt */
+        .stranger-alert {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 3px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+            animation: pulseAlert 2s infinite;
+        }
+        
+        @keyframes pulseAlert {
+            0%, 100% { 
+                box-shadow: 0 5px 15px rgba(234, 67, 53, 0.2);
+                border-color: var(--accent-color);
+            }
+            50% { 
+                box-shadow: 0 5px 20px rgba(234, 67, 53, 0.4);
+                border-color: var(--danger-color);
+            }
+        }
+        
+        .stranger-alert-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .stranger-alert-icon {
+            background-color: var(--accent-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+            animation: alertPulse 1.5s infinite;
+        }
+        
+        @keyframes alertPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(234, 67, 53, 0.7);
+            }
+            50% { 
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(234, 67, 53, 0);
+            }
+        }
+        
+        .stranger-alert-header h4 {
+            font-size: 24px;
+            color: var(--danger-color);
+            margin: 0;
+        }
+        
+        .stranger-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stranger-example {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 120px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all var(--transition-fast);
+        }
+        
+        .stranger-example:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .stranger-example img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .stranger-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(234, 67, 53, 0.9);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* ========== CONTROL PANEL SECTION ========== */
+        .control-panel {
+            padding: 80px 0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .control-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .panel-description {
+            animation: fadeInLeft 1s ease-out;
+        }
+        
+        .panel-description h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .panel-description ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .panel-description li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .panel-description i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .control-interface {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow-hover);
+            animation: fadeInRight 1s ease-out;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            color: white;
+        }
+        
+        .panel-header h3 {
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            animation: statusPulse 2s infinite;
+        }
+        
+        @keyframes statusPulse {
+            0%, 100% { 
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7);
+            }
+            70% { 
+                opacity: 0.7;
+                box-shadow: 0 0 0 10px rgba(52, 168, 83, 0);
+            }
+        }
+        
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .control-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .control-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .control-item.active {
+            border-color: var(--primary-color);
+            background: rgba(26, 115, 232, 0.2);
+        }
+        
+        .control-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .control-item h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .control-slider {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 25px;
+        }
+        
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .slider-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .slider-fill {
+            height: 100%;
+            width: 70%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .slider-handle {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            cursor: grab;
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .control-btn-panel {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         /* ========== DEMO SECTION ========== */
         .demo {
             padding: 80px 0;
-            background-color: white;
+            background-color: #f8f9fa;
             position: relative;
         }
         
@@ -634,7 +936,7 @@
             gap: 20px;
         }
         
-        .control-btn {
+        .demo-btn {
             padding: 15px 20px;
             border: none;
             border-radius: 8px;
@@ -651,22 +953,22 @@
             overflow: hidden;
         }
         
-        .control-btn i {
+        .demo-btn i {
             font-size: 20px;
             transition: transform var(--transition-fast);
         }
         
-        .control-btn:hover {
+        .demo-btn:hover {
             background-color: #e8f0fe;
             color: var(--primary-color);
             transform: translateX(5px);
         }
         
-        .control-btn:hover i {
+        .demo-btn:hover i {
             transform: scale(1.2);
         }
         
-        .control-btn.active {
+        .demo-btn.active {
             background-color: #e8f0fe;
             color: var(--primary-color);
             border-left: 4px solid var(--primary-color);
@@ -699,7 +1001,6 @@
         }
         
         .demo-screen {
-            height: 300px;
             position: relative;
             overflow: hidden;
         }
@@ -707,6 +1008,10 @@
         .demo-screen-content {
             padding: 20px;
             color: white;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
         .alert {
@@ -754,29 +1059,67 @@
             to { opacity: 1; }
         }
         
-        .status-icon {
+        .status-dot-small {
             display: inline-block;
             width: 12px;
             height: 12px;
             border-radius: 50%;
             background-color: var(--secondary-color);
             margin-right: 10px;
-            animation: status-pulse 2s infinite;
+            animation: statusPulse 2s infinite;
         }
         
-        @keyframes status-pulse {
-            0% { 
-                opacity: 1;
-                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7);
-            }
-            70% { 
-                opacity: 0.7;
-                box-shadow: 0 0 0 10px rgba(52, 168, 83, 0);
-            }
-            100% { 
-                opacity: 1;
-                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0);
-            }
+        /* Phần hình ảnh phát hiện người lạ trong demo */
+        .detection-image-container {
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .detection-image-container.active {
+            display: block;
+        }
+        
+        .detection-image-box {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .detection-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .detection-image-box::after {
+            content: '⚠ PHÁT HIỆN NGƯỜI LẠ';
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            background-color: rgba(234, 67, 53, 0.9);
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .image-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #bdc1c6;
+            text-align: center;
         }
         
         /* Demo Images */
@@ -834,7 +1177,7 @@
         /* ========== PRICING SECTION ========== */
         .pricing {
             padding: 80px 0;
-            background-color: #f8f9fa;
+            background-color: white;
             position: relative;
         }
         
@@ -1241,25 +1584,25 @@
         
         /* ========== RESPONSIVE STYLES ========== */
         @media (max-width: 992px) {
-            .hero-content, .demo-container {
+            .hero-content, .demo-container, .control-container {
                 grid-template-columns: 1fr;
             }
             
-            .hero-text, .demo-controls {
+            .hero-text, .demo-controls, .panel-description {
                 order: 2;
             }
             
-            .hero-image, .demo-display {
+            .hero-image, .demo-display, .control-interface {
                 order: 1;
             }
             
-            .steps {
+            .detection-process {
                 flex-direction: column;
                 align-items: center;
                 gap: 40px;
             }
             
-            .step:not(:last-child)::after {
+            .detection-step:not(:last-child)::after {
                 display: none;
             }
             
@@ -1330,6 +1673,10 @@
                 text-align: center;
                 margin-bottom: 10px;
             }
+            
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1398,7 +1745,8 @@
                 <ul class="nav-links">
                     <li><a href="#home">Trang chủ</a></li>
                     <li><a href="#features">Tính năng</a></li>
-                    <li><a href="#how-it-works">Cách hoạt động</a></li>
+                    <li><a href="#detection">Phát hiện người lạ</a></li>
+                    <li><a href="#control">Giám sát điều khiển</a></li>
                     <li><a href="#demo">Demo</a></li>
                     <li><a href="#pricing">Bảng giá</a></li>
                     <li><a href="#contact">Liên hệ</a></li>
@@ -1416,8 +1764,8 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Robot Trông Nhà <span>Thông Minh AI</span></h1>
-                    <p>AI GuardBot là giải pháp an ninh gia đình tiên tiến sử dụng trí tuệ nhân tạo để phát hiện bất thường và cảnh báo xâm nhập tự động. Giữ cho ngôi nhà của bạn an toàn 24/7.</p>
+                    <h1>Robot <span>Phát Hiện Người Lạ</span> Thông Minh</h1>
+                    <p>AI GuardBot là hệ thống giám sát an ninh tiên tiến sử dụng trí tuệ nhân tạo để phát hiện và cảnh báo xâm nhập của người lạ. Giám sát và điều khiển từ xa 24/7.</p>
                     <div class="hero-buttons">
                         <a href="#demo" class="btn">Xem Demo</a>
                         <a href="#pricing" class="btn btn-secondary">Đặt hàng ngay</a>
@@ -1425,8 +1773,8 @@
                 </div>
                 
                 <div class="hero-image">
-                    <!-- Hình ảnh Robot Trông Nhà AI -->
-                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Robot Trông Nhà AI" class="robot-image">
+                    <!-- Hình ảnh Robot Phát Hiện Người Lạ -->
+                    <img src="https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Robot Phát Hiện Người Lạ" class="robot-image">
                 </div>
             </div>
         </div>
@@ -1443,12 +1791,12 @@
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-brain"></i>
+                        <i class="fas fa-user-secret"></i>
                     </div>
-                    <h3>AI Phát Hiện Bất Thường</h3>
-                    <p>Thuật toán AI học sâu phân tích hành vi và phát hiện các hoạt động đáng ngờ trong và xung quanh ngôi nhà của bạn.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'AI phân tích hành vi')">
-                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="AI Phân Tích Hành Vi">
+                    <h3>Nhận Diện Khuôn Mặt AI</h3>
+                    <p>Thuật toán AI học sâu nhận diện khuôn mặt, phân biệt người quen và người lạ với độ chính xác 99.8%.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'AI nhận diện khuôn mặt')">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="AI Nhận Diện Khuôn Mặt">
                     </div>
                 </div>
                 
@@ -1457,7 +1805,7 @@
                         <i class="fas fa-bell"></i>
                     </div>
                     <h3>Cảnh Báo Tức Thì</h3>
-                    <p>Gửi thông báo ngay lập tức đến điện thoại của bạn khi phát hiện xâm nhập hoặc hoạt động bất thường.</p>
+                    <p>Gửi thông báo ngay lập tức đến điện thoại của bạn khi phát hiện người lạ xâm nhập.</p>
                     <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Cảnh báo trên điện thoại')">
                         <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Cảnh Báo Trên Điện Thoại">
                     </div>
@@ -1478,21 +1826,21 @@
                     <div class="feature-icon">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3>Tự Động Tuần Tra</h3>
-                    <p>Robot tự động di chuyển và quét toàn bộ khu vực được chỉ định, ghi lại mọi hoạt động đáng ngờ.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Robot tự động tuần tra')">
-                        <img src="https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Robot Tự Động Tuần Tra">
+                    <h3>Điều Khiển Từ Xa</h3>
+                    <p>Điều khiển robot di chuyển, xoay camera từ xa qua ứng dụng di động từ bất kỳ đâu.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Điều khiển robot từ xa')">
+                        <img src="https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Điều Khiển Từ Xa">
                     </div>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-microphone"></i>
+                        <i class="fas fa-video"></i>
                     </div>
-                    <h3>Phát Hiện Âm Thanh</h3>
-                    <p>Nhận diện âm thanh bất thường như tiếng kính vỡ, báo động hoặc tiếng động lạ để cảnh báo kịp thời.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Phát hiện âm thanh bất thường')">
-                        <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Phát Hiện Âm Thanh">
+                    <h3>Ghi Hình Tự Động</h3>
+                    <p>Tự động ghi hình khi phát hiện người lạ và lưu trữ lên đám mây 30 ngày.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Ghi hình tự động')">
+                        <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Ghi Hình Tự Động">
                     </div>
                 </div>
                 
@@ -1510,48 +1858,199 @@
         </div>
     </section>
 
-    <!-- How It Works Section -->
-    <section class="how-it-works" id="how-it-works">
+    <!-- Stranger Detection Section -->
+    <section class="stranger-detection" id="detection">
         <div class="container">
             <div class="section-title">
-                <h2>Cách Hoạt Động</h2>
-                <p>AI GuardBot bảo vệ ngôi nhà của bạn qua 4 bước đơn giản</p>
+                <h2>Phát Hiện Người Lạ</h2>
+                <p>Quy trình phát hiện và cảnh báo người lạ xâm nhập tự động</p>
             </div>
             
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Thiết Lập & Kết Nối</h3>
-                    <p>Cài đặt AI GuardBot trong nhà và kết nối với ứng dụng di động qua Wi-Fi. Thiết lập khu vực cần bảo vệ.</p>
-                    <div class="step-image" onclick="openModal('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Thiết lập và kết nối robot')">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Thiết Lập Robot">
+            <div class="detection-process">
+                <div class="detection-step">
+                    <div class="detection-number">1</div>
+                    <h3>Quét & Phân Tích</h3>
+                    <p>Camera AI quét liên tục và phân tích khuôn mặt trong khu vực giám sát.</p>
+                    <div class="detection-image" onclick="openModal('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Camera quét và phân tích')">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Quét Và Phân Tích">
                     </div>
                 </div>
                 
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Giám Sát & Phân Tích</h3>
-                    <p>Robot tự động tuần tra và sử dụng camera, cảm biến để thu thập dữ liệu. AI phân tích hoạt động bình thường và bất thường.</p>
-                    <div class="step-image" onclick="openModal('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Robot giám sát và phân tích')">
-                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Giám Sát Và Phân Tích">
+                <div class="detection-step">
+                    <div class="detection-number">2</div>
+                    <h3>Nhận Diện Khuôn Mặt</h3>
+                    <p>AI so sánh khuôn mặt với cơ sở dữ liệu người quen đã được đăng ký.</p>
+                    <div class="detection-image" onclick="openModal('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Nhận diện khuôn mặt AI')">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Nhận Diện Khuôn Mặt">
                     </div>
                 </div>
                 
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Phát Hiện Bất Thường</h3>
-                    <p>Khi phát hiện hoạt động đáng ngờ như xâm nhập, chuyển động lạ hoặc âm thanh bất thường, hệ thống sẽ ghi nhận và phân loại.</p>
-                    <div class="step-image" onclick="openModal('https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Phát hiện hoạt động bất thường')">
-                        <img src="https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Phát Hiện Bất Thường">
+                <div class="detection-step">
+                    <div class="detection-number">3</div>
+                    <h3>Xác Định Người Lạ</h3>
+                    <p>Hệ thống xác định người lạ khi không khớp với bất kỳ khuôn mặt nào trong cơ sở dữ liệu.</p>
+                    
+                    <!-- Phần cảnh báo người lạ -->
+                    <div class="stranger-alert">
+                        <div class="stranger-alert-header">
+                            <div class="stranger-alert-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h4>⚠ PHÁT HIỆN NGƯỜI LẠ</h4>
+                        </div>
+                        
+                        <div class="stranger-images">
+                            <div class="stranger-example" onclick="openModal('https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80', 'Phát hiện người lạ xâm nhập')">
+                                <img src="https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Người lạ xâm nhập">
+                                <div class="stranger-label">NGƯỜI LẠ XÂM NHẬP</div>
+                            </div>
+                            <div class="stranger-example" onclick="openModal('https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80', 'Phát hiện người lạ quanh nhà')">
+                                <img src="https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Người lạ quanh nhà">
+                                <div class="stranger-label">NGƯỜI LẠ QUANH NHÀ</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detection-image" onclick="openModal('https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Xác định người lạ')">
+                        <img src="https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Xác Định Người Lạ">
                     </div>
                 </div>
                 
-                <div class="step">
-                    <div class="step-number">4</div>
+                <div class="detection-step">
+                    <div class="detection-number">4</div>
                     <h3>Cảnh Báo & Hành Động</h3>
-                    <p>Gửi cảnh báo ngay lập tức đến điện thoại của bạn. Tùy cài đặt, có thể kích hoạt đèn, còi báo động hoặc thông báo cho dịch vụ an ninh.</p>
-                    <div class="step-image" onclick="openModal('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Cảnh báo và hành động tự động')">
+                    <p>Gửi cảnh báo tức thì và tự động kích hoạt các biện pháp an ninh theo cài đặt.</p>
+                    <div class="detection-image" onclick="openModal('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Cảnh báo và hành động')">
                         <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Cảnh Báo Và Hành Động">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Control Panel Section -->
+    <section class="control-panel" id="control">
+        <div class="container">
+            <div class="section-title">
+                <h2>Giám Sát & Điều Khiển</h2>
+                <p>Điều khiển và giám sát robot từ xa qua ứng dụng di động</p>
+            </div>
+            
+            <div class="control-container">
+                <div class="panel-description">
+                    <h3>Bảng Điều Khiển Thông Minh</h3>
+                    <p>Kiểm soát toàn bộ hệ thống AI GuardBot từ xa với giao diện trực quan và dễ sử dụng.</p>
+                    
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> <strong>Điều khiển di chuyển robot</strong> - Điều hướng robot đến bất kỳ vị trí nào trong nhà</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Xoay camera 360 độ</strong> - Quan sát mọi góc độ với camera xoay tự do</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Xem trực tiếp camera</strong> - Theo dõi thời gian thực qua ứng dụng</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Cài đặt khu vực giám sát</strong> - Thiết lập vùng an toàn và cấm</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Quản lý danh sách người quen</strong> - Thêm/xóa người được phép</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Xem lịch sử cảnh báo</strong> - Truy xuất mọi sự kiện đã ghi nhận</li>
+                    </ul>
+                    
+                    <div style="margin-top: 30px;">
+                        <a href="#demo" class="btn btn-secondary">Trải nghiệm điều khiển</a>
+                    </div>
+                </div>
+                
+                <div class="control-interface">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-gamepad"></i> Bảng Điều Khiển</h3>
+                        <div class="status-indicator">
+                            <div class="status-dot"></div>
+                            <span>Đang kết nối</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-grid">
+                        <div class="control-item active" id="move-forward" onclick="controlAction('forward')">
+                            <div class="control-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <h4>Tiến</h4>
+                            <p>Di chuyển về phía trước</p>
+                        </div>
+                        
+                        <div class="control-item" id="move-back" onclick="controlAction('back')">
+                            <div class="control-icon">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <h4>Lùi</h4>
+                            <p>Di chuyển về phía sau</p>
+                        </div>
+                        
+                        <div class="control-item" id="rotate-left" onclick="controlAction('left')">
+                            <div class="control-icon">
+                                <i class="fas fa-arrow-left"></i>
+                            </div>
+                            <h4>Rẽ trái</h4>
+                            <p>Xoay sang trái</p>
+                        </div>
+                        
+                        <div class="control-item" id="rotate-right" onclick="controlAction('right')">
+                            <div class="control-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <h4>Rẽ phải</h4>
+                            <p>Xoay sang phải</p>
+                        </div>
+                    </div>
+                    
+                    <div class="control-slider">
+                        <div class="slider-header">
+                            <span>Tốc độ di chuyển</span>
+                            <span id="speed-value">70%</span>
+                        </div>
+                        <div class="slider-container" onclick="changeSpeed(event)">
+                            <div class="slider-fill" id="speed-slider">
+                                <div class="slider-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-grid">
+                        <div class="control-item" onclick="controlAction('camera-up')">
+                            <div class="control-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <h4>Camera lên</h4>
+                            <p>Điều chỉnh góc camera</p>
+                        </div>
+                        
+                        <div class="control-item" onclick="controlAction('camera-down')">
+                            <div class="control-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <h4>Camera xuống</h4>
+                            <p>Điều chỉnh góc camera</p>
+                        </div>
+                        
+                        <div class="control-item" onclick="controlAction('zoom-in')">
+                            <div class="control-icon">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                            <h4>Phóng to</h4>
+                            <p>Zoom camera</p>
+                        </div>
+                        
+                        <div class="control-item" onclick="controlAction('zoom-out')">
+                            <div class="control-icon">
+                                <i class="fas fa-search-minus"></i>
+                            </div>
+                            <h4>Thu nhỏ</h4>
+                            <p>Zoom camera</p>
+                        </div>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button class="control-btn-panel btn" onclick="controlAction('patrol')">
+                            <i class="fas fa-route"></i> Tuần tra tự động
+                        </button>
+                        <button class="control-btn-panel btn-danger" onclick="controlAction('alarm')">
+                            <i class="fas fa-bell"></i> Báo động
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1563,57 +2062,66 @@
         <div class="container">
             <div class="section-title">
                 <h2>Trải Nghiệm Thực Tế</h2>
-                <p>Xem cách AI GuardBot phát hiện và cảnh báo các tình huống bất thường</p>
+                <p>Xem cách AI GuardBot phát hiện người lạ và điều khiển từ xa</p>
             </div>
             
             <div class="demo-container">
                 <div class="demo-controls">
-                    <button class="control-btn active" data-scenario="normal" onclick="changeScenario('normal')">
+                    <button class="demo-btn active" data-scenario="normal" onclick="changeScenario('normal')">
                         <i class="fas fa-home"></i>
                         <span>Hoạt động bình thường</span>
                     </button>
                     
-                    <button class="control-btn" data-scenario="movement" onclick="changeScenario('movement')">
-                        <i class="fas fa-running"></i>
-                        <span>Phát hiện chuyển động lạ</span>
-                    </button>
-                    
-                    <button class="control-btn" data-scenario="intrusion" onclick="changeScenario('intrusion')">
+                    <button class="demo-btn" data-scenario="stranger" onclick="changeScenario('stranger')">
                         <i class="fas fa-user-secret"></i>
-                        <span>Phát hiện xâm nhập</span>
+                        <span>Phát hiện người lạ</span>
                     </button>
                     
-                    <button class="control-btn" data-scenario="sound" onclick="changeScenario('sound')">
-                        <i class="fas fa-volume-up"></i>
-                        <span>Phát hiện âm thanh lạ</span>
+                    <button class="demo-btn" data-scenario="control" onclick="changeScenario('control')">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Điều khiển từ xa</span>
+                    </button>
+                    
+                    <button class="demo-btn" data-scenario="alert" onclick="changeScenario('alert')">
+                        <i class="fas fa-bell"></i>
+                        <span>Cảnh báo khẩn cấp</span>
                     </button>
                 </div>
                 
                 <div class="demo-display">
                     <div class="demo-screen">
                         <div class="demo-screen-content">
-                            <div class="alert" id="intrusion-alert">
-                                <h3><i class="fas fa-exclamation-triangle"></i> CẢNH BÁO XÂM NHẬP</h3>
-                                <p>Đã phát hiện người lạ xâm nhập vào khu vực phòng khách lúc 14:30:25.</p>
+                            <div class="alert" id="stranger-alert">
+                                <h3><i class="fas fa-exclamation-triangle"></i> CẢNH BÁO NGƯỜI LẠ</h3>
+                                <p>Đã phát hiện người lạ xâm nhập vào khu vực cửa trước lúc 14:30:25.</p>
                                 <p><strong>Hành động:</strong> Đã gửi cảnh báo đến điện thoại của bạn và kích hoạt đèn cảnh báo.</p>
                             </div>
                             
-                            <div class="alert" id="movement-alert">
-                                <h3><i class="fas fa-exclamation-circle"></i> PHÁT HIỆN CHUYỂN ĐỘNG LẠ</h3>
-                                <p>Đã phát hiện chuyển động bất thường trong khu vực nhà bếp lúc 14:25:10.</p>
-                                <p><strong>Hành động:</strong> Đang ghi hình và phân tích hành vi.</p>
+                            <div class="alert" id="control-alert">
+                                <h3><i class="fas fa-gamepad"></i> ĐIỀU KHIỂN TỪ XA</h3>
+                                <p>Robot đang được điều khiển từ xa qua ứng dụng di động.</p>
+                                <p><strong>Trạng thái:</strong> Đang di chuyển đến khu vực phòng khách.</p>
                             </div>
                             
-                            <div class="alert" id="sound-alert">
-                                <h3><i class="fas fa-exclamation-circle"></i> PHÁT HIỆN ÂM THANH LẠ</h3>
-                                <p>Đã phát hiện âm thanh vỡ kính tại khu vực cửa sổ phòng ngủ lúc 14:20:05.</p>
-                                <p><strong>Hành động:</strong> Đã gửi cảnh báo đến điện thoại của bạn.</p>
+                            <div class="alert" id="emergency-alert">
+                                <h3><i class="fas fa-bell"></i> BÁO ĐỘNG KHẨN CẤP</h3>
+                                <p>Báo động đã được kích hoạt! Còi báo động và đèn nhấp nháy đang hoạt động.</p>
+                                <p><strong>Thông báo:</strong> Đã gửi thông báo khẩn cấp đến dịch vụ an ninh.</p>
+                            </div>
+                            
+                            <!-- Phần hình ảnh phát hiện người lạ -->
+                            <div class="detection-image-container" id="detection-image-container">
+                                <div class="detection-image-box">
+                                    <img id="detection-image" src="" alt="Hình ảnh phát hiện người lạ">
+                                </div>
+                                <div class="image-info" id="image-info"></div>
                             </div>
                             
                             <div class="detection-status">
-                                <h3><span class="status-icon"></span> TRẠNG THÁI HỆ THỐNG</h3>
-                                <p id="status-text">Hệ thống đang hoạt động bình thường. Không phát hiện bất thường.</p>
-                                <p><strong>Khu vực giám sát:</strong> Phòng khách, Nhà bếp, Hành lang, Cửa ra vào</p>
+                                <h3><span class="status-dot-small"></span> TRẠNG THÁI HỆ THỐNG</h3>
+                                <p id="status-text">Hệ thống đang hoạt động bình thường. Không phát hiện người lạ.</p>
+                                <p><strong>Khu vực giám sát:</strong> Cửa trước, Phòng khách, Hành lang, Cửa sau</p>
+                                <p><strong>Người đã đăng ký:</strong> 5 người</p>
                                 <p><strong>Thời gian:</strong> <span id="demo-time">14:15:30</span></p>
                             </div>
                         </div>
@@ -1643,16 +2151,16 @@
             <div class="pricing-cards">
                 <div class="pricing-card">
                     <h3>Cơ Bản</h3>
-                    <div class="price">3.990.000<span>đ</span></div>
+                    <div class="price">4.990.000<span>đ</span></div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> 1 Robot AI GuardBot</li>
-                        <li><i class="fas fa-check"></i> Giám sát 1 khu vực</li>
-                        <li><i class="fas fa-check"></i> Phát hiện chuyển động</li>
+                        <li><i class="fas fa-check"></i> Nhận diện người lạ cơ bản</li>
+                        <li><i class="fas fa-check"></i> Giám sát 2 khu vực</li>
                         <li><i class="fas fa-check"></i> Cảnh báo qua ứng dụng</li>
-                        <li><i class="fas fa-times"></i> Phát hiện âm thanh bất thường</li>
-                        <li><i class="fas fa-times"></i> Báo động tự động</li>
+                        <li><i class="fas fa-times"></i> Điều khiển từ xa</li>
+                        <li><i class="fas fa-times"></i> Lưu trữ đám mây</li>
                     </ul>
-                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Cơ Bản - Robot AI GuardBot')">
+                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Cơ Bản')">
                         <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Cơ Bản">
                     </div>
                     <a href="#" class="btn">Đặt Mua</a>
@@ -1661,34 +2169,34 @@
                 <div class="pricing-card featured">
                     <div class="featured-badge">Phổ Biến</div>
                     <h3>Chuyên Nghiệp</h3>
-                    <div class="price">6.990.000<span>đ</span></div>
+                    <div class="price">8.990.000<span>đ</span></div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> 1 Robot AI GuardBot cao cấp</li>
-                        <li><i class="fas fa-check"></i> Giám sát 3 khu vực</li>
-                        <li><i class="fas fa-check"></i> Phát hiện chuyển động & xâm nhập</li>
-                        <li><i class="fas fa-check"></i> Phát hiện âm thanh bất thường</li>
-                        <li><i class="fas fa-check"></i> Báo động tự động</li>
+                        <li><i class="fas fa-check"></i> Nhận diện AI chính xác cao</li>
+                        <li><i class="fas fa-check"></i> Giám sát 4 khu vực</li>
+                        <li><i class="fas fa-check"></i> Điều khiển từ xa đầy đủ</li>
                         <li><i class="fas fa-check"></i> Lưu trữ đám mây 30 ngày</li>
+                        <li><i class="fas fa-check"></i> Hỗ trợ kỹ thuật 24/7</li>
                     </ul>
-                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Chuyên Nghiệp - Robot AI GuardBot cao cấp')">
+                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Chuyên Nghiệp')">
                         <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Chuyên Nghiệp">
                     </div>
                     <a href="#" class="btn">Đặt Mua</a>
                 </div>
                 
                 <div class="pricing-card">
-                    <h3>Gia Đình</h3>
-                    <div class="price">9.990.000<span>đ</span></div>
+                    <h3>Gia Đình Cao Cấp</h3>
+                    <div class="price">14.990.000<span>đ</span></div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> 2 Robot AI GuardBot</li>
+                        <li><i class="fas fa-check"></i> Nhận diện AI nâng cao</li>
                         <li><i class="fas fa-check"></i> Giám sát toàn bộ ngôi nhà</li>
-                        <li><i class="fas fa-check"></i> Tất cả tính năng AI nâng cao</li>
-                        <li><i class="fas fa-check"></i> Hỗ trợ kết nối với hệ thống an ninh</li>
+                        <li><i class="fas fa-check"></i> Điều khiển từ xa nâng cao</li>
                         <li><i class="fas fa-check"></i> Lưu trữ đám mây 90 ngày</li>
                         <li><i class="fas fa-check"></i> Hỗ trợ 24/7 & bảo hành 3 năm</li>
                     </ul>
-                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Gia Đình - 2 Robot AI GuardBot')">
-                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Gia Đình">
+                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Gia Đình Cao Cấp')">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Gia Đình Cao Cấp">
                     </div>
                     <a href="#" class="btn">Đặt Mua</a>
                 </div>
@@ -1702,7 +2210,7 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>AI GuardBot</h3>
-                    <p>Giải pháp robot trông nhà thông minh sử dụng AI để phát hiện bất thường và cảnh báo xâm nhập tự động.</p>
+                    <p>Hệ thống robot phát hiện người lạ và giám sát điều khiển thông minh sử dụng AI để bảo vệ ngôi nhà của bạn 24/7.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -1716,7 +2224,8 @@
                     <ul class="footer-links">
                         <li><a href="#home">Trang chủ</a></li>
                         <li><a href="#features">Tính năng</a></li>
-                        <li><a href="#how-it-works">Cách hoạt động</a></li>
+                        <li><a href="#detection">Phát hiện người lạ</a></li>
+                        <li><a href="#control">Giám sát điều khiển</a></li>
                         <li><a href="#demo">Demo</a></li>
                         <li><a href="#pricing">Bảng giá</a></li>
                     </ul>
@@ -1745,7 +2254,7 @@
             </div>
             
             <div class="copyright">
-                <p>&copy; 2023 AI GuardBot. Tất cả các quyền được bảo lưu.</p>
+                <p>&copy; 2023 AI GuardBot - Robot Phát Hiện Người Lạ & Giám Sát Điều Khiển. Tất cả các quyền được bảo lưu.</p>
             </div>
         </div>
     </footer>
@@ -1782,7 +2291,7 @@
         // Demo scenario switching
         function changeScenario(scenario) {
             // Update active button
-            document.querySelectorAll('.control-btn').forEach(btn => {
+            document.querySelectorAll('.demo-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.getAttribute('data-scenario') === scenario) {
                     btn.classList.add('active');
@@ -1790,9 +2299,14 @@
             });
             
             // Update alerts
-            document.getElementById('intrusion-alert').classList.remove('active');
-            document.getElementById('movement-alert').classList.remove('active');
-            document.getElementById('sound-alert').classList.remove('active');
+            document.getElementById('stranger-alert').classList.remove('active');
+            document.getElementById('control-alert').classList.remove('active');
+            document.getElementById('emergency-alert').classList.remove('active');
+            
+            // Update detection image container
+            const detectionImageContainer = document.getElementById('detection-image-container');
+            const detectionImage = document.getElementById('detection-image');
+            const imageInfo = document.getElementById('image-info');
             
             // Update status text and time
             const statusText = document.getElementById('status-text');
@@ -1800,28 +2314,145 @@
             
             switch(scenario) {
                 case 'normal':
-                    statusText.textContent = 'Hệ thống đang hoạt động bình thường. Không phát hiện bất thường.';
+                    statusText.textContent = 'Hệ thống đang hoạt động bình thường. Không phát hiện người lạ.';
                     demoTime.textContent = '14:15:30';
+                    detectionImageContainer.classList.remove('active');
                     break;
                     
-                case 'movement':
-                    document.getElementById('movement-alert').classList.add('active');
-                    statusText.textContent = 'Đã phát hiện chuyển động bất thường trong khu vực nhà bếp. Đang phân tích...';
-                    demoTime.textContent = '14:25:10';
-                    break;
-                    
-                case 'intrusion':
-                    document.getElementById('intrusion-alert').classList.add('active');
-                    statusText.textContent = 'CẢNH BÁO: Đã phát hiện xâm nhập vào khu vực phòng khách!';
+                case 'stranger':
+                    document.getElementById('stranger-alert').classList.add('active');
+                    statusText.textContent = 'CẢNH BÁO: Đã phát hiện người lạ xâm nhập vào khu vực cửa trước!';
                     demoTime.textContent = '14:30:25';
+                    
+                    // Hiển thị hình ảnh phát hiện người lạ
+                    detectionImage.src = 'https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
+                    imageInfo.textContent = 'Hình ảnh phát hiện người lạ tại cửa trước lúc 14:30:25';
+                    detectionImageContainer.classList.add('active');
                     break;
                     
-                case 'sound':
-                    document.getElementById('sound-alert').classList.add('active');
-                    statusText.textContent = 'Đã phát hiện âm thanh bất thường tại khu vực cửa sổ phòng ngủ.';
-                    demoTime.textContent = '14:20:05';
+                case 'control':
+                    document.getElementById('control-alert').classList.add('active');
+                    statusText.textContent = 'Đang điều khiển robot từ xa. Robot đang di chuyển đến khu vực phòng khách.';
+                    demoTime.textContent = '14:45:10';
+                    
+                    // Hiển thị hình ảnh điều khiển
+                    detectionImage.src = 'https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
+                    imageInfo.textContent = 'Robot đang được điều khiển di chuyển qua ứng dụng di động';
+                    detectionImageContainer.classList.add('active');
+                    break;
+                    
+                case 'alert':
+                    document.getElementById('emergency-alert').classList.add('active');
+                    statusText.textContent = 'BÁO ĐỘNG KHẨN CẤP: Còi báo động và đèn nhấp nháy đang hoạt động!';
+                    demoTime.textContent = '14:50:05';
+                    
+                    // Hiển thị hình ảnh báo động
+                    detectionImage.src = 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
+                    imageInfo.textContent = 'Hệ thống báo động khẩn cấp đã được kích hoạt';
+                    detectionImageContainer.classList.add('active');
                     break;
             }
+        }
+        
+        // Control panel functions
+        function controlAction(action) {
+            // Remove active class from all control items
+            document.querySelectorAll('.control-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item if it's a movement control
+            if (['forward', 'back', 'left', 'right'].includes(action)) {
+                document.getElementById(`move-${action}`).classList.add('active');
+            }
+            
+            // Show feedback based on action
+            let feedback = '';
+            switch(action) {
+                case 'forward':
+                    feedback = 'Robot đang di chuyển về phía trước';
+                    break;
+                case 'back':
+                    feedback = 'Robot đang di chuyển về phía sau';
+                    break;
+                case 'left':
+                    feedback = 'Robot đang rẽ trái';
+                    break;
+                case 'right':
+                    feedback = 'Robot đang rẽ phải';
+                    break;
+                case 'camera-up':
+                    feedback = 'Camera đang xoay lên';
+                    break;
+                case 'camera-down':
+                    feedback = 'Camera đang xoay xuống';
+                    break;
+                case 'zoom-in':
+                    feedback = 'Đang phóng to camera';
+                    break;
+                case 'zoom-out':
+                    feedback = 'Đang thu nhỏ camera';
+                    break;
+                case 'patrol':
+                    feedback = 'Đã kích hoạt chế độ tuần tra tự động';
+                    break;
+                case 'alarm':
+                    feedback = 'Báo động đã được kích hoạt!';
+                    break;
+            }
+            
+            // Show notification
+            showNotification(feedback);
+        }
+        
+        // Speed control slider
+        function changeSpeed(event) {
+            const slider = document.querySelector('.slider-container');
+            const fill = document.getElementById('speed-slider');
+            const value = document.getElementById('speed-value');
+            
+            const rect = slider.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            let percentage = (x / rect.width) * 100;
+            
+            // Limit between 0 and 100
+            percentage = Math.max(0, Math.min(100, percentage));
+            
+            fill.style.width = percentage + '%';
+            value.textContent = Math.round(percentage) + '%';
+            
+            // Show notification
+            showNotification(`Tốc độ di chuyển đã được điều chỉnh: ${Math.round(percentage)}%`);
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary-color);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                z-index: 10000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                animation: slideInRight 0.3s ease-out;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
         
         // Image modal functionality
@@ -1870,7 +2501,7 @@
         // Thêm hiệu ứng scroll animation
         document.addEventListener('DOMContentLoaded', function() {
             // Thêm class scroll-animate cho các phần tử cần animation
-            const animateElements = document.querySelectorAll('.feature-card, .step, .pricing-card, .section-title');
+            const animateElements = document.querySelectorAll('.feature-card, .detection-step, .pricing-card, .section-title');
             
             animateElements.forEach(element => {
                 element.classList.add('scroll-animate');
@@ -1893,6 +2524,15 @@
             
             // Kiểm tra khi scroll
             window.addEventListener('scroll', checkScroll);
+            
+            // Thêm animation cho bảng điều khiển
+            const controlInterface = document.querySelector('.control-interface');
+            if (controlInterface) {
+                controlInterface.classList.add('scroll-animate');
+                setTimeout(() => {
+                    controlInterface.classList.add('visible');
+                }, 300);
+            }
         });
     </script>
 </body>
