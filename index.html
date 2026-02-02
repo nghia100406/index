@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI GuardBot - Robot Trông Nhà Thông Minh</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== CSS CHO AI GUARDBOT - GỘP TẤT CẢ HIỆU ỨNG ========== */
+        
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --warning-color: #f9ab00;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --gray-color: #5f6368;
+            --light-gray: #dadce0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
+            --transition-fast: 0.3s ease;
+            --transition-medium: 0.5s ease;
+            --transition-slow: 0.8s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f5f7fa;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ========== HEADER & NAVIGATION ========== */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary-color);
+            transition: transform var(--transition-fast);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+            animation: rotateLogo 10s linear infinite;
+        }
+        
+        @keyframes rotateLogo {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-color);
+            font-weight: 500;
+            transition: color var(--transition-fast);
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width var(--transition-fast);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: transform var(--transition-fast);
+        }
+        
+        .mobile-menu-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* ========== HERO SECTION ========== */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(26, 115, 232, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+        
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-text {
+            animation: fadeInLeft 1s ease-out;
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .hero-text h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: var(--dark-color);
+        }
+        
+        .hero-text h1 span {
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-text h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(26, 115, 232, 0.2);
+            z-index: -1;
+            border-radius: 4px;
+        }
+        
+        .hero-text p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--gray-color);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left var(--transition-medium);
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            background-color: #0d62d9;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2d9951;
+        }
+        
+        .hero-image {
+            position: relative;
+            text-align: center;
+            animation: fadeInRight 1s ease-out;
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .robot-image {
+            max-width: 100%;
+            animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform var(--transition-medium);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 10px 30px rgba(26, 115, 232, 0.3); }
+            to { box-shadow: 0 10px 30px rgba(26, 115, 232, 0.6); }
+        }
+        
+        .robot-image:hover {
+            transform: scale(1.05);
+        }
+        
+        /* ========== FEATURES SECTION ========== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: var(--gray-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features {
+            padding: 80px 0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity var(--transition-medium);
+            z-index: -1;
+        }
+        
+        .feature-card:hover::before {
+            opacity: 0.1;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: rgba(26, 115, 232, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: all var(--transition-fast);
+        }
+        
+        .feature-card:hover .feature-icon {
+            background-color: var(--primary-color);
+            transform: rotateY(180deg);
+        }
+        
+        .feature-card:hover .feature-icon i {
+            color: white;
+        }
+        
+        .feature-icon i {
+            font-size: 30px;
+            color: var(--primary-color);
+            transition: all var(--transition-fast);
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            transition: color var(--transition-fast);
+        }
+        
+        .feature-card:hover h3 {
+            color: var(--primary-color);
+        }
+        
+        .feature-card p {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .feature-image::after {
+            content: '+';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(26, 115, 232, 0.8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            transition: transform var(--transition-fast);
+            opacity: 0;
+        }
+        
+        .feature-image:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        
+        .feature-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-medium);
+        }
+        
+        .feature-image:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* ========== HOW IT WORKS SECTION ========== */
+        .how-it-works {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .how-it-works::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100" stroke="rgba(26, 115, 232, 0.05)" stroke-width="1"/><path d="M100,0 L0,100" stroke="rgba(26, 115, 232, 0.05)" stroke-width="1"/></svg>');
+            opacity: 0.5;
+            z-index: 0;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+        
+        .step:nth-child(1) { animation-delay: 0.1s; }
+        .step:nth-child(2) { animation-delay: 0.3s; }
+        .step:nth-child(3) { animation-delay: 0.5s; }
+        .step:nth-child(4) { animation-delay: 0.7s; }
+        
+        .step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            top: 40px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+            z-index: 1;
+            animation: drawLine 1.5s ease-out forwards;
+            transform-origin: left center;
+        }
+        
+        @keyframes drawLine {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 2;
+            transition: all var(--transition-fast);
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        .step:hover .step-number {
+            background-color: var(--secondary-color);
+            transform: scale(1.1) rotate(10deg);
+        }
+        
+        .step h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .step p {
+            margin-bottom: 20px;
+        }
+        
+        .step-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow);
+            transition: transform var(--transition-fast);
+        }
+        
+        .step-image:hover {
+            transform: translateY(-5px);
+        }
+        
+        .step-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-medium);
+        }
+        
+        .step-image:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* ========== DEMO SECTION ========== */
+        .demo {
+            padding: 80px 0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .demo-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .control-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #f1f3f4;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .control-btn i {
+            font-size: 20px;
+            transition: transform var(--transition-fast);
+        }
+        
+        .control-btn:hover {
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        
+        .control-btn:hover i {
+            transform: scale(1.2);
+        }
+        
+        .control-btn.active {
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(26, 115, 232, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(26, 115, 232, 0); }
+        }
+        
+        .demo-display {
+            background-color: var(--dark-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
+            animation: slideUp 1s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .demo-screen {
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .demo-screen-content {
+            padding: 20px;
+            color: white;
+        }
+        
+        .alert {
+            background-color: rgba(234, 67, 53, 0.2);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            display: none;
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .alert.active {
+            display: block;
+            animation: alert-pulse 2s infinite, slideInRight 0.5s ease-out;
+        }
+        
+        @keyframes alert-pulse {
+            0% { background-color: rgba(234, 67, 53, 0.2); }
+            50% { background-color: rgba(234, 67, 53, 0.4); }
+            100% { background-color: rgba(234, 67, 53, 0.2); }
+        }
+        
+        .detection-status {
+            background-color: rgba(52, 168, 83, 0.2);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            border-radius: 4px;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .status-icon {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            margin-right: 10px;
+            animation: status-pulse 2s infinite;
+        }
+        
+        @keyframes status-pulse {
+            0% { 
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7);
+            }
+            70% { 
+                opacity: 0.7;
+                box-shadow: 0 0 0 10px rgba(52, 168, 83, 0);
+            }
+            100% { 
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0);
+            }
+        }
+        
+        /* Demo Images */
+        .demo-images {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .demo-image {
+            width: calc(50% - 10px);
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow);
+            transition: all var(--transition-fast);
+        }
+        
+        .demo-image:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .demo-image::after {
+            content: '🔍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 24px;
+            transition: transform var(--transition-fast);
+            opacity: 0;
+        }
+        
+        .demo-image:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        
+        .demo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-medium);
+        }
+        
+        .demo-image:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* ========== PRICING SECTION ========== */
+        .pricing {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+            position: relative;
+        }
+        
+        .pricing::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, rgba(26, 115, 232, 0.05), transparent);
+            z-index: 0;
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .pricing-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            transform: translateY(-100%);
+            transition: transform var(--transition-medium);
+        }
+        
+        .pricing-card:hover::before {
+            transform: translateY(0);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .pricing-card.featured {
+            border-top: 5px solid var(--primary-color);
+            transform: scale(1.05);
+            animation: featuredCard 3s ease-in-out infinite;
+        }
+        
+        @keyframes featuredCard {
+            0%, 100% { transform: scale(1.05) translateY(0); }
+            50% { transform: scale(1.05) translateY(-5px); }
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            animation: badgePulse 2s infinite;
+        }
+        
+        @keyframes badgePulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+        
+        .price {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 20px 0;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .price::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            transform: scaleX(0);
+            transition: transform var(--transition-medium);
+        }
+        
+        .pricing-card:hover .price::after {
+            transform: scaleX(1);
+        }
+        
+        .price span {
+            font-size: 18px;
+            color: var(--gray-color);
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            transition: transform var(--transition-fast);
+        }
+        
+        .pricing-features li:hover {
+            transform: translateX(5px);
+        }
+        
+        .pricing-features i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .pricing-features i.fa-times {
+            color: var(--light-gray);
+        }
+        
+        .pricing-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+        
+        .pricing-image::after {
+            content: 'Xem chi tiết';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(26, 115, 232, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+        
+        .pricing-image:hover::after {
+            opacity: 1;
+        }
+        
+        .pricing-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-medium);
+        }
+        
+        .pricing-image:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* ========== FOOTER ========== */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 80%, rgba(26, 115, 232, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(52, 168, 83, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: white;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            transition: transform var(--transition-fast);
+        }
+        
+        .footer-links li:hover {
+            transform: translateX(5px);
+        }
+        
+        .footer-links i {
+            margin-right: 10px;
+            margin-top: 3px;
+            color: var(--primary-color);
+            transition: transform var(--transition-fast);
+        }
+        
+        .footer-links li:hover i {
+            transform: rotate(15deg);
+        }
+        
+        .footer-links a {
+            color: #bdc1c6;
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #3c4043;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-icons a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            transform: translateY(100%);
+            transition: transform var(--transition-fast);
+            z-index: -1;
+        }
+        
+        .social-icons a:hover::before {
+            transform: translateY(0);
+        }
+        
+        .social-icons a:hover {
+            background-color: transparent;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #3c4043;
+            color: #bdc1c6;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* ========== IMAGE MODAL ========== */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn var(--transition-medium);
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .image-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: zoomIn 0.5s ease-out;
+        }
+        
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+        
+        .close-modal:hover {
+            background-color: #d32f2f;
+            transform: rotate(90deg);
+        }
+        
+        .image-caption {
+            color: white;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+            animation: fadeInUp 0.5s ease-out 0.3s backwards;
+        }
+        
+        /* ========== RESPONSIVE STYLES ========== */
+        @media (max-width: 992px) {
+            .hero-content, .demo-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-text, .demo-controls {
+                order: 2;
+            }
+            
+            .hero-image, .demo-display {
+                order: 1;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+            
+            .step:not(:last-child)::after {
+                display: none;
+            }
+            
+            .demo-image {
+                width: 100%;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+                animation: none;
+            }
+            
+            .pricing-card.featured:hover {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: var(--shadow);
+                animation: slideDown 0.5s ease-out;
+                backdrop-filter: blur(10px);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 10px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-text h1 {
+                font-size: 32px;
+            }
+            
+            .section-title h2 {
+                font-size: 28px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 28px;
+            }
+            
+            .section-title h2 {
+                font-size: 24px;
+            }
+            
+            .feature-card, .pricing-card {
+                padding: 20px;
+            }
+            
+            .price {
+                font-size: 36px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* ========== SCROLL ANIMATIONS ========== */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* ========== CUSTOM SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0d62d9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AI GuardBot</span>
+                </div>
+                
+                <ul class="nav-links">
+                    <li><a href="#home">Trang chủ</a></li>
+                    <li><a href="#features">Tính năng</a></li>
+                    <li><a href="#how-it-works">Cách hoạt động</a></li>
+                    <li><a href="#demo">Demo</a></li>
+                    <li><a href="#pricing">Bảng giá</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                </ul>
+                
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Robot Trông Nhà <span>Thông Minh AI</span></h1>
+                    <p>AI GuardBot là giải pháp an ninh gia đình tiên tiến sử dụng trí tuệ nhân tạo để phát hiện bất thường và cảnh báo xâm nhập tự động. Giữ cho ngôi nhà của bạn an toàn 24/7.</p>
+                    <div class="hero-buttons">
+                        <a href="#demo" class="btn">Xem Demo</a>
+                        <a href="#pricing" class="btn btn-secondary">Đặt hàng ngay</a>
+                    </div>
+                </div>
+                
+                <div class="hero-image">
+                    <!-- Hình ảnh Robot Trông Nhà AI -->
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Robot Trông Nhà AI" class="robot-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tính Năng Nổi Bật</h2>
+                <p>AI GuardBot được trang bị những công nghệ tiên tiến nhất để bảo vệ ngôi nhà của bạn</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Phát Hiện Bất Thường</h3>
+                    <p>Thuật toán AI học sâu phân tích hành vi và phát hiện các hoạt động đáng ngờ trong và xung quanh ngôi nhà của bạn.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'AI phân tích hành vi')">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="AI Phân Tích Hành Vi">
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Cảnh Báo Tức Thì</h3>
+                    <p>Gửi thông báo ngay lập tức đến điện thoại của bạn khi phát hiện xâm nhập hoặc hoạt động bất thường.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Cảnh báo trên điện thoại')">
+                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Cảnh Báo Trên Điện Thoại">
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Giám Sát 24/7</h3>
+                    <p>Hoạt động liên tục cả ngày lẫn đêm với camera hồng ngoại và cảm biến chuyển động độ nhạy cao.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Camera giám sát 24/7')">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Giám Sát 24/7">
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Tự Động Tuần Tra</h3>
+                    <p>Robot tự động di chuyển và quét toàn bộ khu vực được chỉ định, ghi lại mọi hoạt động đáng ngờ.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Robot tự động tuần tra')">
+                        <img src="https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Robot Tự Động Tuần Tra">
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3>Phát Hiện Âm Thanh</h3>
+                    <p>Nhận diện âm thanh bất thường như tiếng kính vỡ, báo động hoặc tiếng động lạ để cảnh báo kịp thời.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Phát hiện âm thanh bất thường')">
+                        <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Phát Hiện Âm Thanh">
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Bảo Mật Dữ Liệu</h3>
+                    <p>Tất cả dữ liệu được mã hóa end-to-end và lưu trữ an toàn, đảm bảo quyền riêng tư của bạn.</p>
+                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Bảo mật dữ liệu mã hóa')">
+                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Bảo Mật Dữ Liệu">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>Cách Hoạt Động</h2>
+                <p>AI GuardBot bảo vệ ngôi nhà của bạn qua 4 bước đơn giản</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Thiết Lập & Kết Nối</h3>
+                    <p>Cài đặt AI GuardBot trong nhà và kết nối với ứng dụng di động qua Wi-Fi. Thiết lập khu vực cần bảo vệ.</p>
+                    <div class="step-image" onclick="openModal('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Thiết lập và kết nối robot')">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Thiết Lập Robot">
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Giám Sát & Phân Tích</h3>
+                    <p>Robot tự động tuần tra và sử dụng camera, cảm biến để thu thập dữ liệu. AI phân tích hoạt động bình thường và bất thường.</p>
+                    <div class="step-image" onclick="openModal('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Robot giám sát và phân tích')">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Giám Sát Và Phân Tích">
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Phát Hiện Bất Thường</h3>
+                    <p>Khi phát hiện hoạt động đáng ngờ như xâm nhập, chuyển động lạ hoặc âm thanh bất thường, hệ thống sẽ ghi nhận và phân loại.</p>
+                    <div class="step-image" onclick="openModal('https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Phát hiện hoạt động bất thường')">
+                        <img src="https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Phát Hiện Bất Thường">
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Cảnh Báo & Hành Động</h3>
+                    <p>Gửi cảnh báo ngay lập tức đến điện thoại của bạn. Tùy cài đặt, có thể kích hoạt đèn, còi báo động hoặc thông báo cho dịch vụ an ninh.</p>
+                    <div class="step-image" onclick="openModal('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Cảnh báo và hành động tự động')">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Cảnh Báo Và Hành Động">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo" id="demo">
+        <div class="container">
+            <div class="section-title">
+                <h2>Trải Nghiệm Thực Tế</h2>
+                <p>Xem cách AI GuardBot phát hiện và cảnh báo các tình huống bất thường</p>
+            </div>
+            
+            <div class="demo-container">
+                <div class="demo-controls">
+                    <button class="control-btn active" data-scenario="normal" onclick="changeScenario('normal')">
+                        <i class="fas fa-home"></i>
+                        <span>Hoạt động bình thường</span>
+                    </button>
+                    
+                    <button class="control-btn" data-scenario="movement" onclick="changeScenario('movement')">
+                        <i class="fas fa-running"></i>
+                        <span>Phát hiện chuyển động lạ</span>
+                    </button>
+                    
+                    <button class="control-btn" data-scenario="intrusion" onclick="changeScenario('intrusion')">
+                        <i class="fas fa-user-secret"></i>
+                        <span>Phát hiện xâm nhập</span>
+                    </button>
+                    
+                    <button class="control-btn" data-scenario="sound" onclick="changeScenario('sound')">
+                        <i class="fas fa-volume-up"></i>
+                        <span>Phát hiện âm thanh lạ</span>
+                    </button>
+                </div>
+                
+                <div class="demo-display">
+                    <div class="demo-screen">
+                        <div class="demo-screen-content">
+                            <div class="alert" id="intrusion-alert">
+                                <h3><i class="fas fa-exclamation-triangle"></i> CẢNH BÁO XÂM NHẬP</h3>
+                                <p>Đã phát hiện người lạ xâm nhập vào khu vực phòng khách lúc 14:30:25.</p>
+                                <p><strong>Hành động:</strong> Đã gửi cảnh báo đến điện thoại của bạn và kích hoạt đèn cảnh báo.</p>
+                            </div>
+                            
+                            <div class="alert" id="movement-alert">
+                                <h3><i class="fas fa-exclamation-circle"></i> PHÁT HIỆN CHUYỂN ĐỘNG LẠ</h3>
+                                <p>Đã phát hiện chuyển động bất thường trong khu vực nhà bếp lúc 14:25:10.</p>
+                                <p><strong>Hành động:</strong> Đang ghi hình và phân tích hành vi.</p>
+                            </div>
+                            
+                            <div class="alert" id="sound-alert">
+                                <h3><i class="fas fa-exclamation-circle"></i> PHÁT HIỆN ÂM THANH LẠ</h3>
+                                <p>Đã phát hiện âm thanh vỡ kính tại khu vực cửa sổ phòng ngủ lúc 14:20:05.</p>
+                                <p><strong>Hành động:</strong> Đã gửi cảnh báo đến điện thoại của bạn.</p>
+                            </div>
+                            
+                            <div class="detection-status">
+                                <h3><span class="status-icon"></span> TRẠNG THÁI HỆ THỐNG</h3>
+                                <p id="status-text">Hệ thống đang hoạt động bình thường. Không phát hiện bất thường.</p>
+                                <p><strong>Khu vực giám sát:</strong> Phòng khách, Nhà bếp, Hành lang, Cửa ra vào</p>
+                                <p><strong>Thời gian:</strong> <span id="demo-time">14:15:30</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-images">
+                        <div class="demo-image" onclick="openModal('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Phòng khách được giám sát')">
+                            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Phòng Khách">
+                        </div>
+                        <div class="demo-image" onclick="openModal('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Camera AI GuardBot hoạt động')">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Camera AI GuardBot">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Bảng Giá</h2>
+                <p>Lựa chọn gói phù hợp với nhu cầu bảo vệ ngôi nhà của bạn</p>
+            </div>
+            
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>Cơ Bản</h3>
+                    <div class="price">3.990.000<span>đ</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 1 Robot AI GuardBot</li>
+                        <li><i class="fas fa-check"></i> Giám sát 1 khu vực</li>
+                        <li><i class="fas fa-check"></i> Phát hiện chuyển động</li>
+                        <li><i class="fas fa-check"></i> Cảnh báo qua ứng dụng</li>
+                        <li><i class="fas fa-times"></i> Phát hiện âm thanh bất thường</li>
+                        <li><i class="fas fa-times"></i> Báo động tự động</li>
+                    </ul>
+                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Cơ Bản - Robot AI GuardBot')">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Cơ Bản">
+                    </div>
+                    <a href="#" class="btn">Đặt Mua</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Phổ Biến</div>
+                    <h3>Chuyên Nghiệp</h3>
+                    <div class="price">6.990.000<span>đ</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 1 Robot AI GuardBot cao cấp</li>
+                        <li><i class="fas fa-check"></i> Giám sát 3 khu vực</li>
+                        <li><i class="fas fa-check"></i> Phát hiện chuyển động & xâm nhập</li>
+                        <li><i class="fas fa-check"></i> Phát hiện âm thanh bất thường</li>
+                        <li><i class="fas fa-check"></i> Báo động tự động</li>
+                        <li><i class="fas fa-check"></i> Lưu trữ đám mây 30 ngày</li>
+                    </ul>
+                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Chuyên Nghiệp - Robot AI GuardBot cao cấp')">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Chuyên Nghiệp">
+                    </div>
+                    <a href="#" class="btn">Đặt Mua</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Gia Đình</h3>
+                    <div class="price">9.990.000<span>đ</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 2 Robot AI GuardBot</li>
+                        <li><i class="fas fa-check"></i> Giám sát toàn bộ ngôi nhà</li>
+                        <li><i class="fas fa-check"></i> Tất cả tính năng AI nâng cao</li>
+                        <li><i class="fas fa-check"></i> Hỗ trợ kết nối với hệ thống an ninh</li>
+                        <li><i class="fas fa-check"></i> Lưu trữ đám mây 90 ngày</li>
+                        <li><i class="fas fa-check"></i> Hỗ trợ 24/7 & bảo hành 3 năm</li>
+                    </ul>
+                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Gia Đình - 2 Robot AI GuardBot')">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Gia Đình">
+                    </div>
+                    <a href="#" class="btn">Đặt Mua</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AI GuardBot</h3>
+                    <p>Giải pháp robot trông nhà thông minh sử dụng AI để phát hiện bất thường và cảnh báo xâm nhập tự động.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Liên Kết Nhanh</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Trang chủ</a></li>
+                        <li><a href="#features">Tính năng</a></li>
+                        <li><a href="#how-it-works">Cách hoạt động</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#pricing">Bảng giá</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Hỗ Trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Trung tâm trợ giúp</a></li>
+                        <li><a href="#">Hướng dẫn sử dụng</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                        <li><a href="#">Điều khoản sử dụng</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Liên Hệ</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> <span>3 Đường Cầu Giấy, Láng Thượng, Hà Nội</span></li>
+                        <li><i class="fas fa-phone"></i> <span>0981 564 362</span></li>
+                        <li><i class="fas fa-envelope"></i> <span>29.10a4.nguyenducnghia@gmail.com</span></li>
+                        <li><i class="fas fa-clock"></i> <span>Thứ 2 - Thứ 6: 8:00 - 17:00</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 AI GuardBot. Tất cả các quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <img id="modalImage" src="" alt="">
+            <div class="image-caption" id="modalCaption"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Demo scenario switching
+        function changeScenario(scenario) {
+            // Update active button
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-scenario') === scenario) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Update alerts
+            document.getElementById('intrusion-alert').classList.remove('active');
+            document.getElementById('movement-alert').classList.remove('active');
+            document.getElementById('sound-alert').classList.remove('active');
+            
+            // Update status text and time
+            const statusText = document.getElementById('status-text');
+            const demoTime = document.getElementById('demo-time');
+            
+            switch(scenario) {
+                case 'normal':
+                    statusText.textContent = 'Hệ thống đang hoạt động bình thường. Không phát hiện bất thường.';
+                    demoTime.textContent = '14:15:30';
+                    break;
+                    
+                case 'movement':
+                    document.getElementById('movement-alert').classList.add('active');
+                    statusText.textContent = 'Đã phát hiện chuyển động bất thường trong khu vực nhà bếp. Đang phân tích...';
+                    demoTime.textContent = '14:25:10';
+                    break;
+                    
+                case 'intrusion':
+                    document.getElementById('intrusion-alert').classList.add('active');
+                    statusText.textContent = 'CẢNH BÁO: Đã phát hiện xâm nhập vào khu vực phòng khách!';
+                    demoTime.textContent = '14:30:25';
+                    break;
+                    
+                case 'sound':
+                    document.getElementById('sound-alert').classList.add('active');
+                    statusText.textContent = 'Đã phát hiện âm thanh bất thường tại khu vực cửa sổ phòng ngủ.';
+                    demoTime.textContent = '14:20:05';
+                    break;
+            }
+        }
+        
+        // Image modal functionality
+        function openModal(imageSrc, caption) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalCaption = document.getElementById('modalCaption');
+            
+            modalImage.src = imageSrc;
+            modalCaption.textContent = caption;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Thêm hiệu ứng scroll animation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Thêm class scroll-animate cho các phần tử cần animation
+            const animateElements = document.querySelectorAll('.feature-card, .step, .pricing-card, .section-title');
+            
+            animateElements.forEach(element => {
+                element.classList.add('scroll-animate');
+            });
+            
+            // Kiểm tra khi scroll
+            function checkScroll() {
+                animateElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            // Kiểm tra lần đầu
+            checkScroll();
+            
+            // Kiểm tra khi scroll
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+</body>
+</html>
