@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI GuardBot - Robot Phát Hiện Người Lạ & Giám Sát Điều Khiển</title>
+    <title>AI GuardBot - Robot Phát Hiện Người Lạ & Giám Sát Môi Trường</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ========== CSS CHO AI GUARDBOT - GỘP TẤT CẢ HIỆU ỨNG ========== */
+        /* ========== CSS CHO HỆ THỐNG HOÀN CHỈNH ========== */
         
         :root {
             --primary-color: #1a73e8;
@@ -14,6 +14,8 @@
             --accent-color: #ea4335;
             --warning-color: #f9ab00;
             --danger-color: #d93025;
+            --temperature-color: #ff6b6b;
+            --humidity-color: #4d96ff;
             --dark-color: #202124;
             --light-color: #f8f9fa;
             --gray-color: #5f6368;
@@ -456,70 +458,238 @@
             margin-bottom: 20px;
         }
         
-        .feature-image {
-            width: 100%;
-            height: 200px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 15px;
-            cursor: pointer;
-            position: relative;
+        /* ========== DHT11 MONITORING SECTION ========== */
+        .dht-monitoring {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         }
         
-        .feature-image::after {
-            content: '+';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 50px;
-            height: 50px;
-            background-color: rgba(26, 115, 232, 0.8);
-            color: white;
+        /* DHT11 Sensor Display */
+        .sensor-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .sensor-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sensor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .sensor-card.temperature {
+            border-top: 5px solid var(--temperature-color);
+        }
+        
+        .sensor-card.humidity {
+            border-top: 5px solid var(--humidity-color);
+        }
+        
+        .sensor-icon {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            color: white;
+        }
+        
+        .temperature .sensor-icon {
+            background: linear-gradient(135deg, var(--temperature-color), #ff8e8e);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .humidity .sensor-icon {
+            background: linear-gradient(135deg, var(--humidity-color), #6fb1ff);
+            box-shadow: 0 5px 15px rgba(77, 150, 255, 0.3);
+        }
+        
+        .sensor-value {
+            font-size: 64px;
+            font-weight: 700;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        
+        .sensor-value span {
+            font-size: 32px;
+            margin-top: 10px;
+        }
+        
+        .temperature .sensor-value {
+            color: var(--temperature-color);
+        }
+        
+        .humidity .sensor-value {
+            color: var(--humidity-color);
+        }
+        
+        .sensor-status {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .status-normal {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: var(--secondary-color);
+        }
+        
+        .status-warning {
+            background-color: rgba(249, 171, 0, 0.1);
+            color: var(--warning-color);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-danger {
+            background-color: rgba(234, 67, 53, 0.1);
+            color: var(--accent-color);
+            animation: pulse 1s infinite;
+        }
+        
+        /* Sensor Chart */
+        .sensor-chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 50px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chart-btn {
+            padding: 8px 20px;
+            border: 1px solid var(--light-gray);
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .chart-btn:hover, .chart-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        /* Sensor Details */
+        .sensor-details {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .detail-item {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: var(--light-color);
+            transition: all var(--transition-fast);
+        }
+        
+        .detail-item:hover {
+            background: #e8f0fe;
+            transform: translateY(-5px);
+        }
+        
+        .detail-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .detail-value {
             font-size: 24px;
-            font-weight: bold;
-            transition: transform var(--transition-fast);
-            opacity: 0;
+            font-weight: 700;
+            margin: 10px 0;
+            color: var(--dark-color);
         }
         
-        .feature-image:hover::after {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
+        .detail-label {
+            color: var(--gray-color);
+            font-size: 14px;
         }
         
-        .feature-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform var(--transition-medium);
+        /* Connection Status */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
         }
         
-        .feature-image:hover img {
-            transform: scale(1.1);
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            animation: statusPulse 2s infinite;
+        }
+        
+        @keyframes statusPulse {
+            0%, 100% { 
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7);
+            }
+            70% { 
+                opacity: 0.7;
+                box-shadow: 0 0 0 10px rgba(52, 168, 83, 0);
+            }
         }
         
         /* ========== STRANGER DETECTION SECTION ========== */
         .stranger-detection {
             padding: 80px 0;
-            background-color: #f8f9fa;
+            background-color: white;
             position: relative;
             overflow: hidden;
-        }
-        
-        .stranger-detection::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100" stroke="rgba(234, 67, 53, 0.05)" stroke-width="1"/><path d="M100,0 L0,100" stroke="rgba(234, 67, 53, 0.05)" stroke-width="1"/></svg>');
-            opacity: 0.5;
-            z-index: 0;
         }
         
         .detection-process {
@@ -623,112 +793,10 @@
             transform: scale(1.1);
         }
         
-        /* Phần hình ảnh phát hiện người lạ đặc biệt */
-        .stranger-alert {
-            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 30px;
-            border: 3px solid var(--accent-color);
-            position: relative;
-            overflow: hidden;
-            animation: pulseAlert 2s infinite;
-        }
-        
-        @keyframes pulseAlert {
-            0%, 100% { 
-                box-shadow: 0 5px 15px rgba(234, 67, 53, 0.2);
-                border-color: var(--accent-color);
-            }
-            50% { 
-                box-shadow: 0 5px 20px rgba(234, 67, 53, 0.4);
-                border-color: var(--danger-color);
-            }
-        }
-        
-        .stranger-alert-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-        
-        .stranger-alert-icon {
-            background-color: var(--accent-color);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-right: 15px;
-            animation: alertPulse 1.5s infinite;
-        }
-        
-        @keyframes alertPulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(234, 67, 53, 0.7);
-            }
-            50% { 
-                transform: scale(1.1);
-                box-shadow: 0 0 0 10px rgba(234, 67, 53, 0);
-            }
-        }
-        
-        .stranger-alert-header h4 {
-            font-size: 24px;
-            color: var(--danger-color);
-            margin: 0;
-        }
-        
-        .stranger-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .stranger-example {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            height: 120px;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: all var(--transition-fast);
-        }
-        
-        .stranger-example:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-        
-        .stranger-example img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .stranger-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(234, 67, 53, 0.9);
-            color: white;
-            padding: 5px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
         /* ========== CONTROL PANEL SECTION ========== */
         .control-panel {
             padding: 80px 0;
-            background-color: white;
+            background-color: #f8f9fa;
             position: relative;
         }
         
@@ -787,32 +855,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-        
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-        
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--secondary-color);
-            animation: statusPulse 2s infinite;
-        }
-        
-        @keyframes statusPulse {
-            0%, 100% { 
-                opacity: 1;
-                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7);
-            }
-            70% { 
-                opacity: 0.7;
-                box-shadow: 0 0 0 10px rgba(52, 168, 83, 0);
-            }
         }
         
         .control-grid {
@@ -919,7 +961,7 @@
         /* ========== DEMO SECTION ========== */
         .demo {
             padding: 80px 0;
-            background-color: #f8f9fa;
+            background-color: white;
             position: relative;
         }
         
@@ -975,12 +1017,6 @@
             animation: pulse 2s infinite;
         }
         
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(26, 115, 232, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(26, 115, 232, 0); }
-        }
-        
         .demo-display {
             background-color: var(--dark-color);
             border-radius: 10px;
@@ -1022,17 +1058,6 @@
             border-radius: 4px;
             display: none;
             animation: slideInRight 0.5s ease-out;
-        }
-        
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
         
         .alert.active {
@@ -1322,48 +1347,6 @@
             color: var(--light-gray);
         }
         
-        .pricing-image {
-            width: 100%;
-            height: 180px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 20px;
-            cursor: pointer;
-            position: relative;
-            box-shadow: var(--shadow);
-        }
-        
-        .pricing-image::after {
-            content: 'Xem chi tiết';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(26, 115, 232, 0.9);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity var(--transition-fast);
-        }
-        
-        .pricing-image:hover::after {
-            opacity: 1;
-        }
-        
-        .pricing-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform var(--transition-medium);
-        }
-        
-        .pricing-image:hover img {
-            transform: scale(1.1);
-        }
-        
         /* ========== FOOTER ========== */
         footer {
             background-color: var(--dark-color);
@@ -1618,6 +1601,10 @@
             .pricing-card.featured:hover {
                 transform: translateY(-10px);
             }
+            
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 768px) {
@@ -1655,11 +1642,7 @@
                 font-size: 28px;
             }
             
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .pricing-cards {
+            .features-grid, .pricing-cards {
                 grid-template-columns: 1fr;
             }
             
@@ -1674,7 +1657,11 @@
                 margin-bottom: 10px;
             }
             
-            .control-grid {
+            .sensor-value {
+                font-size: 48px;
+            }
+            
+            .details-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -1688,7 +1675,7 @@
                 font-size: 24px;
             }
             
-            .feature-card, .pricing-card {
+            .feature-card, .pricing-card, .sensor-card {
                 padding: 20px;
             }
             
@@ -1731,6 +1718,9 @@
             background: #0d62d9;
         }
     </style>
+    
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Header & Navigation -->
@@ -1739,14 +1729,15 @@
             <nav>
                 <div class="logo">
                     <i class="fas fa-robot"></i>
-                    <span>AI GuardBot</span>
+                    <span>AI GuardBot Pro</span>
                 </div>
                 
                 <ul class="nav-links">
                     <li><a href="#home">Trang chủ</a></li>
                     <li><a href="#features">Tính năng</a></li>
+                    <li><a href="#monitoring">Giám sát DHT11</a></li>
                     <li><a href="#detection">Phát hiện người lạ</a></li>
-                    <li><a href="#control">Giám sát điều khiển</a></li>
+                    <li><a href="#control">Điều khiển</a></li>
                     <li><a href="#demo">Demo</a></li>
                     <li><a href="#pricing">Bảng giá</a></li>
                     <li><a href="#contact">Liên hệ</a></li>
@@ -1764,17 +1755,16 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Robot <span>Phát Hiện Người Lạ</span> Thông Minh</h1>
-                    <p>AI GuardBot là hệ thống giám sát an ninh tiên tiến sử dụng trí tuệ nhân tạo để phát hiện và cảnh báo xâm nhập của người lạ. Giám sát và điều khiển từ xa 24/7.</p>
+                    <h1>Hệ Thống <span>An Ninh & Giám Sát</span> Thông Minh</h1>
+                    <p>AI GuardBot Pro kết hợp phát hiện người lạ bằng AI và giám sát môi trường với cảm biến DHT11. Bảo vệ toàn diện ngôi nhà của bạn 24/7.</p>
                     <div class="hero-buttons">
-                        <a href="#demo" class="btn">Xem Demo</a>
+                        <a href="#demo" class="btn">Xem Demo Live</a>
                         <a href="#pricing" class="btn btn-secondary">Đặt hàng ngay</a>
                     </div>
                 </div>
                 
                 <div class="hero-image">
-                    <!-- Hình ảnh Robot Phát Hiện Người Lạ -->
-                    <img src="https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Robot Phát Hiện Người Lạ" class="robot-image">
+                    <img src="https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="AI GuardBot Pro" class="robot-image">
                 </div>
             </div>
         </div>
@@ -1784,8 +1774,8 @@
     <section class="features" id="features">
         <div class="container">
             <div class="section-title">
-                <h2>Tính Năng Nổi Bật</h2>
-                <p>AI GuardBot được trang bị những công nghệ tiên tiến nhất để bảo vệ ngôi nhà của bạn</p>
+                <h2>Tính Năng Toàn Diện</h2>
+                <p>AI GuardBot Pro tích hợp công nghệ tiên tiến nhất để bảo vệ ngôi nhà của bạn</p>
             </div>
             
             <div class="features-grid">
@@ -1793,11 +1783,24 @@
                     <div class="feature-icon">
                         <i class="fas fa-user-secret"></i>
                     </div>
-                    <h3>Nhận Diện Khuôn Mặt AI</h3>
-                    <p>Thuật toán AI học sâu nhận diện khuôn mặt, phân biệt người quen và người lạ với độ chính xác 99.8%.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'AI nhận diện khuôn mặt')">
-                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="AI Nhận Diện Khuôn Mặt">
+                    <h3>Nhận Diện Người Lạ AI</h3>
+                    <p>AI học sâu nhận diện khuôn mặt, phân biệt người quen và người lạ với độ chính xác 99.8%.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-thermometer-half"></i>
                     </div>
+                    <h3>Giám Sát Môi Trường</h3>
+                    <p>Cảm biến DHT11 theo dõi nhiệt độ và độ ẩm thời gian thực, cảnh báo bất thường.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Điều Khiển Từ Xa</h3>
+                    <p>Điều khiển robot di chuyển và camera từ xa qua ứng dụng di động từ bất kỳ đâu.</p>
                 </div>
                 
                 <div class="feature-card">
@@ -1805,55 +1808,126 @@
                         <i class="fas fa-bell"></i>
                     </div>
                     <h3>Cảnh Báo Tức Thì</h3>
-                    <p>Gửi thông báo ngay lập tức đến điện thoại của bạn khi phát hiện người lạ xâm nhập.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Cảnh báo trên điện thoại')">
-                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Cảnh Báo Trên Điện Thoại">
-                    </div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <h3>Giám Sát 24/7</h3>
-                    <p>Hoạt động liên tục cả ngày lẫn đêm với camera hồng ngoại và cảm biến chuyển động độ nhạy cao.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Camera giám sát 24/7')">
-                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Giám Sát 24/7">
-                    </div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>Điều Khiển Từ Xa</h3>
-                    <p>Điều khiển robot di chuyển, xoay camera từ xa qua ứng dụng di động từ bất kỳ đâu.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Điều khiển robot từ xa')">
-                        <img src="https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Điều Khiển Từ Xa">
-                    </div>
+                    <p>Gửi cảnh báo ngay lập tức đến điện thoại khi phát hiện người lạ hoặc môi trường bất thường.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-video"></i>
                     </div>
-                    <h3>Ghi Hình Tự Động</h3>
-                    <p>Tự động ghi hình khi phát hiện người lạ và lưu trữ lên đám mây 30 ngày.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Ghi hình tự động')">
-                        <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Ghi Hình Tự Động">
-                    </div>
+                    <h3>Ghi Hình 24/7</h3>
+                    <p>Tự động ghi hình khi phát hiện sự cố và lưu trữ lên đám mây 30 ngày.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3>Bảo Mật Dữ Liệu</h3>
-                    <p>Tất cả dữ liệu được mã hóa end-to-end và lưu trữ an toàn, đảm bảo quyền riêng tư của bạn.</p>
-                    <div class="feature-image" onclick="openModal('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Bảo mật dữ liệu mã hóa')">
-                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Bảo Mật Dữ Liệu">
+                    <h3>Bảo Mật Toàn Diện</h3>
+                    <p>Mã hóa end-to-end, xác thực đa yếu tố bảo vệ dữ liệu và quyền riêng tư của bạn.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DHT11 Monitoring Section -->
+    <section class="dht-monitoring" id="monitoring">
+        <div class="container">
+            <div class="section-title">
+                <h2>Giám Sát Môi Trường DHT11</h2>
+                <p>Theo dõi nhiệt độ và độ ẩm trong thời gian thực từ cảm biến DHT11</p>
+            </div>
+            
+            <!-- Sensor Cards -->
+            <div class="sensor-container">
+                <div class="sensor-card temperature">
+                    <div class="sensor-icon">
+                        <i class="fas fa-thermometer-half"></i>
+                    </div>
+                    <h3>Nhiệt Độ</h3>
+                    <div class="sensor-value">
+                        <span id="temperatureValue">--</span>
+                        <span>°C</span>
+                    </div>
+                    <div class="sensor-status status-normal" id="temperatureStatus">
+                        Đang cập nhật...
+                    </div>
+                    <p>Cập nhật lần cuối: <span id="tempLastUpdate">--:--:--</span></p>
+                </div>
+                
+                <div class="sensor-card humidity">
+                    <div class="sensor-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3>Độ Ẩm</h3>
+                    <div class="sensor-value">
+                        <span id="humidityValue">--</span>
+                        <span>%</span>
+                    </div>
+                    <div class="sensor-status status-normal" id="humidityStatus">
+                        Đang cập nhật...
+                    </div>
+                    <p>Cập nhật lần cuối: <span id="humLastUpdate">--:--:--</span></p>
+                </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="sensor-chart-container">
+                <div class="chart-header">
+                    <h3>Biểu Đồ Theo Dõi Thời Gian Thực</h3>
+                    <div class="chart-controls">
+                        <button class="chart-btn active" onclick="showChart('temperature')">Nhiệt độ</button>
+                        <button class="chart-btn" onclick="showChart('humidity')">Độ ẩm</button>
+                        <button class="chart-btn" onclick="showChart('both')">Cả hai</button>
                     </div>
                 </div>
+                <div class="chart-container">
+                    <canvas id="temperatureChart"></canvas>
+                    <canvas id="humidityChart" style="display: none;"></canvas>
+                </div>
+            </div>
+            
+            <!-- Sensor Details -->
+            <div class="sensor-details">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="detail-value" id="sensorType">DHT11</div>
+                        <div class="detail-label">Loại cảm biến</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="detail-value" id="updateInterval">5s</div>
+                        <div class="detail-label">Tần suất cập nhật</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="detail-value" id="dataPoints">0</div>
+                        <div class="detail-label">Số điểm dữ liệu</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="detail-value" id="uptime">00:00:00</div>
+                        <div class="detail-label">Thời gian hoạt động</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Connection Status -->
+            <div class="connection-status">
+                <div class="status-dot"></div>
+                <span id="connectionStatus">Đang kết nối với cảm biến DHT11...</span>
             </div>
         </div>
     </section>
@@ -1889,37 +1963,15 @@
                     <div class="detection-number">3</div>
                     <h3>Xác Định Người Lạ</h3>
                     <p>Hệ thống xác định người lạ khi không khớp với bất kỳ khuôn mặt nào trong cơ sở dữ liệu.</p>
-                    
-                    <!-- Phần cảnh báo người lạ -->
-                    <div class="stranger-alert">
-                        <div class="stranger-alert-header">
-                            <div class="stranger-alert-icon">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </div>
-                            <h4>⚠ PHÁT HIỆN NGƯỜI LẠ</h4>
-                        </div>
-                        
-                        <div class="stranger-images">
-                            <div class="stranger-example" onclick="openModal('https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80', 'Phát hiện người lạ xâm nhập')">
-                                <img src="https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Người lạ xâm nhập">
-                                <div class="stranger-label">NGƯỜI LẠ XÂM NHẬP</div>
-                            </div>
-                            <div class="stranger-example" onclick="openModal('https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80', 'Phát hiện người lạ quanh nhà')">
-                                <img src="https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Người lạ quanh nhà">
-                                <div class="stranger-label">NGƯỜI LẠ QUANH NHÀ</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="detection-image" onclick="openModal('https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Xác định người lạ')">
-                        <img src="https://images.unsplash.com/photo-1591386766897-5c229156d0a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Xác Định Người Lạ">
+                    <div class="detection-image" onclick="openModal('https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Xác định người lạ')">
+                        <img src="https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Xác Định Người Lạ">
                     </div>
                 </div>
                 
                 <div class="detection-step">
                     <div class="detection-number">4</div>
                     <h3>Cảnh Báo & Hành Động</h3>
-                    <p>Gửi cảnh báo tức thì và tự động kích hoạt các biện pháp an ninh theo cài đặt.</p>
+                    <p>Gửi cảnh báo tức thì và tự động kích hoạt các biện pháp an ninh.</p>
                     <div class="detection-image" onclick="openModal('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Cảnh báo và hành động')">
                         <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Cảnh Báo Và Hành Động">
                     </div>
@@ -1945,9 +1997,9 @@
                         <li><i class="fas fa-check-circle"></i> <strong>Điều khiển di chuyển robot</strong> - Điều hướng robot đến bất kỳ vị trí nào trong nhà</li>
                         <li><i class="fas fa-check-circle"></i> <strong>Xoay camera 360 độ</strong> - Quan sát mọi góc độ với camera xoay tự do</li>
                         <li><i class="fas fa-check-circle"></i> <strong>Xem trực tiếp camera</strong> - Theo dõi thời gian thực qua ứng dụng</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Giám sát DHT11 thời gian thực</strong> - Theo dõi nhiệt độ và độ ẩm</li>
                         <li><i class="fas fa-check-circle"></i> <strong>Cài đặt khu vực giám sát</strong> - Thiết lập vùng an toàn và cấm</li>
                         <li><i class="fas fa-check-circle"></i> <strong>Quản lý danh sách người quen</strong> - Thêm/xóa người được phép</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Xem lịch sử cảnh báo</strong> - Truy xuất mọi sự kiện đã ghi nhận</li>
                     </ul>
                     
                     <div style="margin-top: 30px;">
@@ -2010,40 +2062,6 @@
                         </div>
                     </div>
                     
-                    <div class="control-grid">
-                        <div class="control-item" onclick="controlAction('camera-up')">
-                            <div class="control-icon">
-                                <i class="fas fa-video"></i>
-                            </div>
-                            <h4>Camera lên</h4>
-                            <p>Điều chỉnh góc camera</p>
-                        </div>
-                        
-                        <div class="control-item" onclick="controlAction('camera-down')">
-                            <div class="control-icon">
-                                <i class="fas fa-video"></i>
-                            </div>
-                            <h4>Camera xuống</h4>
-                            <p>Điều chỉnh góc camera</p>
-                        </div>
-                        
-                        <div class="control-item" onclick="controlAction('zoom-in')">
-                            <div class="control-icon">
-                                <i class="fas fa-search-plus"></i>
-                            </div>
-                            <h4>Phóng to</h4>
-                            <p>Zoom camera</p>
-                        </div>
-                        
-                        <div class="control-item" onclick="controlAction('zoom-out')">
-                            <div class="control-icon">
-                                <i class="fas fa-search-minus"></i>
-                            </div>
-                            <h4>Thu nhỏ</h4>
-                            <p>Zoom camera</p>
-                        </div>
-                    </div>
-                    
                     <div class="control-buttons">
                         <button class="control-btn-panel btn" onclick="controlAction('patrol')">
                             <i class="fas fa-route"></i> Tuần tra tự động
@@ -2062,7 +2080,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>Trải Nghiệm Thực Tế</h2>
-                <p>Xem cách AI GuardBot phát hiện người lạ và điều khiển từ xa</p>
+                <p>Xem cách AI GuardBot hoạt động với tính năng phát hiện người lạ và giám sát DHT11</p>
             </div>
             
             <div class="demo-container">
@@ -2077,14 +2095,14 @@
                         <span>Phát hiện người lạ</span>
                     </button>
                     
+                    <button class="demo-btn" data-scenario="dht11" onclick="changeScenario('dht11')">
+                        <i class="fas fa-thermometer-half"></i>
+                        <span>Giám sát DHT11</span>
+                    </button>
+                    
                     <button class="demo-btn" data-scenario="control" onclick="changeScenario('control')">
                         <i class="fas fa-gamepad"></i>
                         <span>Điều khiển từ xa</span>
-                    </button>
-                    
-                    <button class="demo-btn" data-scenario="alert" onclick="changeScenario('alert')">
-                        <i class="fas fa-bell"></i>
-                        <span>Cảnh báo khẩn cấp</span>
                     </button>
                 </div>
                 
@@ -2097,22 +2115,22 @@
                                 <p><strong>Hành động:</strong> Đã gửi cảnh báo đến điện thoại của bạn và kích hoạt đèn cảnh báo.</p>
                             </div>
                             
+                            <div class="alert" id="dht11-alert">
+                                <h3><i class="fas fa-thermometer-half"></i> CẢNH BÁO MÔI TRƯỜNG</h3>
+                                <p>Nhiệt độ trong phòng đang ở mức cao: <strong id="alert-temp">30°C</strong>. Độ ẩm: <strong id="alert-hum">75%</strong>.</p>
+                                <p><strong>Khuyến nghị:</strong> Bật điều hòa hoặc mở cửa sổ để thông gió.</p>
+                            </div>
+                            
                             <div class="alert" id="control-alert">
                                 <h3><i class="fas fa-gamepad"></i> ĐIỀU KHIỂN TỪ XA</h3>
                                 <p>Robot đang được điều khiển từ xa qua ứng dụng di động.</p>
                                 <p><strong>Trạng thái:</strong> Đang di chuyển đến khu vực phòng khách.</p>
                             </div>
                             
-                            <div class="alert" id="emergency-alert">
-                                <h3><i class="fas fa-bell"></i> BÁO ĐỘNG KHẨN CẤP</h3>
-                                <p>Báo động đã được kích hoạt! Còi báo động và đèn nhấp nháy đang hoạt động.</p>
-                                <p><strong>Thông báo:</strong> Đã gửi thông báo khẩn cấp đến dịch vụ an ninh.</p>
-                            </div>
-                            
                             <!-- Phần hình ảnh phát hiện người lạ -->
                             <div class="detection-image-container" id="detection-image-container">
                                 <div class="detection-image-box">
-                                    <img id="detection-image" src="" alt="Hình ảnh phát hiện người lạ">
+                                    <img id="detection-image" src="" alt="Hình ảnh phát hiện">
                                 </div>
                                 <div class="image-info" id="image-info"></div>
                             </div>
@@ -2121,7 +2139,7 @@
                                 <h3><span class="status-dot-small"></span> TRẠNG THÁI HỆ THỐNG</h3>
                                 <p id="status-text">Hệ thống đang hoạt động bình thường. Không phát hiện người lạ.</p>
                                 <p><strong>Khu vực giám sát:</strong> Cửa trước, Phòng khách, Hành lang, Cửa sau</p>
-                                <p><strong>Người đã đăng ký:</strong> 5 người</p>
+                                <p><strong>DHT11:</strong> Nhiệt độ: <span id="demo-temp">25°C</span> | Độ ẩm: <span id="demo-hum">60%</span></p>
                                 <p><strong>Thời gian:</strong> <span id="demo-time">14:15:30</span></p>
                             </div>
                         </div>
@@ -2151,53 +2169,44 @@
             <div class="pricing-cards">
                 <div class="pricing-card">
                     <h3>Cơ Bản</h3>
-                    <div class="price">4.990.000<span>đ</span></div>
+                    <div class="price">5.990.000<span>đ</span></div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> 1 Robot AI GuardBot</li>
                         <li><i class="fas fa-check"></i> Nhận diện người lạ cơ bản</li>
+                        <li><i class="fas fa-check"></i> Cảm biến DHT11</li>
                         <li><i class="fas fa-check"></i> Giám sát 2 khu vực</li>
-                        <li><i class="fas fa-check"></i> Cảnh báo qua ứng dụng</li>
                         <li><i class="fas fa-times"></i> Điều khiển từ xa</li>
                         <li><i class="fas fa-times"></i> Lưu trữ đám mây</li>
                     </ul>
-                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Cơ Bản')">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Cơ Bản">
-                    </div>
                     <a href="#" class="btn">Đặt Mua</a>
                 </div>
                 
                 <div class="pricing-card featured">
                     <div class="featured-badge">Phổ Biến</div>
                     <h3>Chuyên Nghiệp</h3>
-                    <div class="price">8.990.000<span>đ</span></div>
+                    <div class="price">9.990.000<span>đ</span></div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> 1 Robot AI GuardBot cao cấp</li>
                         <li><i class="fas fa-check"></i> Nhận diện AI chính xác cao</li>
-                        <li><i class="fas fa-check"></i> Giám sát 4 khu vực</li>
+                        <li><i class="fas fa-check"></i> Cảm biến DHT11 nâng cao</li>
                         <li><i class="fas fa-check"></i> Điều khiển từ xa đầy đủ</li>
                         <li><i class="fas fa-check"></i> Lưu trữ đám mây 30 ngày</li>
                         <li><i class="fas fa-check"></i> Hỗ trợ kỹ thuật 24/7</li>
                     </ul>
-                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Chuyên Nghiệp')">
-                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Chuyên Nghiệp">
-                    </div>
                     <a href="#" class="btn">Đặt Mua</a>
                 </div>
                 
                 <div class="pricing-card">
                     <h3>Gia Đình Cao Cấp</h3>
-                    <div class="price">14.990.000<span>đ</span></div>
+                    <div class="price">16.990.000<span>đ</span></div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> 2 Robot AI GuardBot</li>
                         <li><i class="fas fa-check"></i> Nhận diện AI nâng cao</li>
-                        <li><i class="fas fa-check"></i> Giám sát toàn bộ ngôi nhà</li>
+                        <li><i class="fas fa-check"></i> 3 Cảm biến DHT11</li>
                         <li><i class="fas fa-check"></i> Điều khiển từ xa nâng cao</li>
                         <li><i class="fas fa-check"></i> Lưu trữ đám mây 90 ngày</li>
                         <li><i class="fas fa-check"></i> Hỗ trợ 24/7 & bảo hành 3 năm</li>
                     </ul>
-                    <div class="pricing-image" onclick="openModal('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80', 'Gói Gia Đình Cao Cấp')">
-                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gói Gia Đình Cao Cấp">
-                    </div>
                     <a href="#" class="btn">Đặt Mua</a>
                 </div>
             </div>
@@ -2209,8 +2218,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>AI GuardBot</h3>
-                    <p>Hệ thống robot phát hiện người lạ và giám sát điều khiển thông minh sử dụng AI để bảo vệ ngôi nhà của bạn 24/7.</p>
+                    <h3>AI GuardBot Pro</h3>
+                    <p>Hệ thống an ninh thông minh tích hợp phát hiện người lạ và giám sát môi trường DHT11.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -2224,21 +2233,22 @@
                     <ul class="footer-links">
                         <li><a href="#home">Trang chủ</a></li>
                         <li><a href="#features">Tính năng</a></li>
+                        <li><a href="#monitoring">Giám sát DHT11</a></li>
                         <li><a href="#detection">Phát hiện người lạ</a></li>
-                        <li><a href="#control">Giám sát điều khiển</a></li>
+                        <li><a href="#control">Điều khiển</a></li>
                         <li><a href="#demo">Demo</a></li>
                         <li><a href="#pricing">Bảng giá</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
-                    <h3>Hỗ Trợ</h3>
+                    <h3>Hỗ Trợ Kỹ Thuật</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Trung tâm trợ giúp</a></li>
-                        <li><a href="#">Hướng dẫn sử dụng</a></li>
+                        <li><a href="#">Hướng dẫn cài đặt DHT11</a></li>
+                        <li><a href="#">Cấu hình hệ thống</a></li>
+                        <li><a href="#">Xử lý sự cố</a></li>
                         <li><a href="#">Câu hỏi thường gặp</a></li>
-                        <li><a href="#">Chính sách bảo mật</a></li>
-                        <li><a href="#">Điều khoản sử dụng</a></li>
+                        <li><a href="#">Tải ứng dụng di động</a></li>
                     </ul>
                 </div>
                 
@@ -2254,7 +2264,7 @@
             </div>
             
             <div class="copyright">
-                <p>&copy; 2023 AI GuardBot - Robot Phát Hiện Người Lạ & Giám Sát Điều Khiển. Tất cả các quyền được bảo lưu.</p>
+                <p>&copy; 2023 AI GuardBot Pro - Hệ thống an ninh & giám sát môi trường thông minh. Tất cả các quyền được bảo lưu.</p>
             </div>
         </div>
     </footer>
@@ -2269,6 +2279,253 @@
     </div>
 
     <script>
+        // ========== DHT11 MONITORING FUNCTIONS ==========
+        let temperatureData = [];
+        let humidityData = [];
+        let timeLabels = [];
+        let startTime = new Date();
+        let dataPoints = 0;
+        let currentChart = 'temperature';
+        
+        // Khởi tạo biểu đồ
+        const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+        const humidityCtx = document.getElementById('humidityChart').getContext('2d');
+        
+        const temperatureChart = new Chart(tempCtx, {
+            type: 'line',
+            data: {
+                labels: timeLabels,
+                datasets: [{
+                    label: 'Nhiệt độ (°C)',
+                    data: temperatureData,
+                    borderColor: '#ff6b6b',
+                    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Nhiệt độ (°C)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Thời gian'
+                        }
+                    }
+                }
+            }
+        });
+        
+        const humidityChart = new Chart(humidityCtx, {
+            type: 'line',
+            data: {
+                labels: timeLabels,
+                datasets: [{
+                    label: 'Độ ẩm (%)',
+                    data: humidityData,
+                    borderColor: '#4d96ff',
+                    backgroundColor: 'rgba(77, 150, 255, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 0,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Độ ẩm (%)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Thời gian'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Hàm chuyển đổi biểu đồ DHT11
+        function showChart(chartType) {
+            document.querySelectorAll('.chart-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (chartType === 'temperature') {
+                document.getElementById('temperatureChart').style.display = 'block';
+                document.getElementById('humidityChart').style.display = 'none';
+                currentChart = 'temperature';
+            } else if (chartType === 'humidity') {
+                document.getElementById('temperatureChart').style.display = 'none';
+                document.getElementById('humidityChart').style.display = 'block';
+                currentChart = 'humidity';
+            }
+        }
+        
+        // Hàm cập nhật dữ liệu DHT11
+        function updateDHT11Data() {
+            // Kết nối với backend Flask API
+            fetch('http://localhost:5000/api/dht11')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const temp = data.temperature;
+                        const hum = data.humidity;
+                        const timestamp = new Date().toLocaleTimeString();
+                        
+                        // Cập nhật giá trị hiển thị
+                        document.getElementById('temperatureValue').textContent = temp.toFixed(1);
+                        document.getElementById('humidityValue').textContent = hum.toFixed(1);
+                        document.getElementById('tempLastUpdate').textContent = timestamp;
+                        document.getElementById('humLastUpdate').textContent = timestamp;
+                        
+                        // Cập nhật trong demo section
+                        document.getElementById('demo-temp').textContent = temp.toFixed(1) + '°C';
+                        document.getElementById('demo-hum').textContent = hum.toFixed(1) + '%';
+                        
+                        // Cập nhật trạng thái
+                        updateTemperatureStatus(temp);
+                        updateHumidityStatus(hum);
+                        
+                        // Thêm dữ liệu vào biểu đồ
+                        addDataToChart(temp, hum, timestamp);
+                        
+                        // Cập nhật thông tin
+                        dataPoints++;
+                        document.getElementById('dataPoints').textContent = dataPoints;
+                        updateUptime();
+                        
+                        // Cập nhật trạng thái kết nối
+                        document.getElementById('connectionStatus').textContent = 'Đã kết nối với cảm biến DHT11';
+                        document.querySelector('.status-dot').style.backgroundColor = '#34a853';
+                    } else {
+                        throw new Error(data.error || 'Lỗi đọc dữ liệu');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi kết nối DHT11:', error);
+                    document.getElementById('connectionStatus').textContent = 'Mất kết nối với cảm biến DHT11';
+                    document.querySelector('.status-dot').style.backgroundColor = '#ea4335';
+                    
+                    // Dữ liệu mẫu để demo
+                    const temp = 25 + Math.random() * 5;
+                    const hum = 60 + Math.random() * 10;
+                    const timestamp = new Date().toLocaleTimeString();
+                    
+                    document.getElementById('temperatureValue').textContent = temp.toFixed(1);
+                    document.getElementById('humidityValue').textContent = hum.toFixed(1);
+                    document.getElementById('demo-temp').textContent = temp.toFixed(1) + '°C';
+                    document.getElementById('demo-hum').textContent = hum.toFixed(1) + '%';
+                    
+                    addDataToChart(temp, hum, timestamp);
+                    dataPoints++;
+                    document.getElementById('dataPoints').textContent = dataPoints;
+                });
+        }
+        
+        // Hàm thêm dữ liệu vào biểu đồ DHT11
+        function addDataToChart(temp, hum, timestamp) {
+            // Giới hạn số điểm dữ liệu
+            if (temperatureData.length > 20) {
+                temperatureData.shift();
+                humidityData.shift();
+                timeLabels.shift();
+            }
+            
+            temperatureData.push(temp);
+            humidityData.push(hum);
+            timeLabels.push(timestamp);
+            
+            // Cập nhật biểu đồ
+            temperatureChart.data.labels = timeLabels;
+            temperatureChart.data.datasets[0].data = temperatureData;
+            temperatureChart.update('none');
+            
+            humidityChart.data.labels = timeLabels;
+            humidityChart.data.datasets[0].data = humidityData;
+            humidityChart.update('none');
+        }
+        
+        // Hàm cập nhật trạng thái nhiệt độ
+        function updateTemperatureStatus(temp) {
+            const statusElement = document.getElementById('temperatureStatus');
+            
+            if (temp < 18) {
+                statusElement.textContent = 'Quá lạnh';
+                statusElement.className = 'sensor-status status-warning';
+            } else if (temp >= 18 && temp <= 28) {
+                statusElement.textContent = 'Bình thường';
+                statusElement.className = 'sensor-status status-normal';
+            } else if (temp > 28 && temp <= 35) {
+                statusElement.textContent = 'Hơi nóng';
+                statusElement.className = 'sensor-status status-warning';
+            } else {
+                statusElement.textContent = 'Quá nóng';
+                statusElement.className = 'sensor-status status-danger';
+            }
+        }
+        
+        // Hàm cập nhật trạng thái độ ẩm
+        function updateHumidityStatus(hum) {
+            const statusElement = document.getElementById('humidityStatus');
+            
+            if (hum < 30) {
+                statusElement.textContent = 'Quá khô';
+                statusElement.className = 'sensor-status status-warning';
+            } else if (hum >= 30 && hum <= 70) {
+                statusElement.textContent = 'Bình thường';
+                statusElement.className = 'sensor-status status-normal';
+            } else if (hum > 70 && hum <= 85) {
+                statusElement.textContent = 'Hơi ẩm';
+                statusElement.className = 'sensor-status status-warning';
+            } else {
+                statusElement.textContent = 'Quá ẩm';
+                statusElement.className = 'sensor-status status-danger';
+            }
+        }
+        
+        // Hàm cập nhật thời gian hoạt động
+        function updateUptime() {
+            const now = new Date();
+            const diff = Math.floor((now - startTime) / 1000);
+            
+            const hours = Math.floor(diff / 3600);
+            const minutes = Math.floor((diff % 3600) / 60);
+            const seconds = diff % 60;
+            
+            document.getElementById('uptime').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // ========== AI GUARDBOT FUNCTIONS ==========
+        
         // Mobile menu toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
@@ -2300,8 +2557,8 @@
             
             // Update alerts
             document.getElementById('stranger-alert').classList.remove('active');
+            document.getElementById('dht11-alert').classList.remove('active');
             document.getElementById('control-alert').classList.remove('active');
-            document.getElementById('emergency-alert').classList.remove('active');
             
             // Update detection image container
             const detectionImageContainer = document.getElementById('detection-image-container');
@@ -2311,44 +2568,51 @@
             // Update status text and time
             const statusText = document.getElementById('status-text');
             const demoTime = document.getElementById('demo-time');
+            const currentTime = new Date().toLocaleTimeString();
             
             switch(scenario) {
                 case 'normal':
                     statusText.textContent = 'Hệ thống đang hoạt động bình thường. Không phát hiện người lạ.';
-                    demoTime.textContent = '14:15:30';
+                    demoTime.textContent = currentTime;
                     detectionImageContainer.classList.remove('active');
                     break;
                     
                 case 'stranger':
                     document.getElementById('stranger-alert').classList.add('active');
                     statusText.textContent = 'CẢNH BÁO: Đã phát hiện người lạ xâm nhập vào khu vực cửa trước!';
-                    demoTime.textContent = '14:30:25';
+                    demoTime.textContent = currentTime;
                     
                     // Hiển thị hình ảnh phát hiện người lạ
                     detectionImage.src = 'https://images.unsplash.com/photo-1554456854-55a089fd4cb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
-                    imageInfo.textContent = 'Hình ảnh phát hiện người lạ tại cửa trước lúc 14:30:25';
+                    imageInfo.textContent = 'Hình ảnh phát hiện người lạ tại cửa trước';
+                    detectionImageContainer.classList.add('active');
+                    break;
+                    
+                case 'dht11':
+                    document.getElementById('dht11-alert').classList.add('active');
+                    statusText.textContent = 'Hệ thống đang giám sát môi trường. Nhiệt độ và độ ẩm trong phạm vi cho phép.';
+                    demoTime.textContent = currentTime;
+                    
+                    // Hiển thị cảnh báo DHT11
+                    const temp = parseFloat(document.getElementById('temperatureValue').textContent) || 25;
+                    const hum = parseFloat(document.getElementById('humidityValue').textContent) || 60;
+                    
+                    document.getElementById('alert-temp').textContent = temp.toFixed(1) + '°C';
+                    document.getElementById('alert-hum').textContent = hum.toFixed(1) + '%';
+                    
+                    detectionImage.src = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
+                    imageInfo.textContent = 'Cảm biến DHT11 đang hoạt động bình thường';
                     detectionImageContainer.classList.add('active');
                     break;
                     
                 case 'control':
                     document.getElementById('control-alert').classList.add('active');
                     statusText.textContent = 'Đang điều khiển robot từ xa. Robot đang di chuyển đến khu vực phòng khách.';
-                    demoTime.textContent = '14:45:10';
+                    demoTime.textContent = currentTime;
                     
                     // Hiển thị hình ảnh điều khiển
                     detectionImage.src = 'https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
-                    imageInfo.textContent = 'Robot đang được điều khiển di chuyển qua ứng dụng di động';
-                    detectionImageContainer.classList.add('active');
-                    break;
-                    
-                case 'alert':
-                    document.getElementById('emergency-alert').classList.add('active');
-                    statusText.textContent = 'BÁO ĐỘNG KHẨN CẤP: Còi báo động và đèn nhấp nháy đang hoạt động!';
-                    demoTime.textContent = '14:50:05';
-                    
-                    // Hiển thị hình ảnh báo động
-                    detectionImage.src = 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
-                    imageInfo.textContent = 'Hệ thống báo động khẩn cấp đã được kích hoạt';
+                    imageInfo.textContent = 'Robot đang được điều khiển qua ứng dụng di động';
                     detectionImageContainer.classList.add('active');
                     break;
             }
@@ -2380,18 +2644,6 @@
                     break;
                 case 'right':
                     feedback = 'Robot đang rẽ phải';
-                    break;
-                case 'camera-up':
-                    feedback = 'Camera đang xoay lên';
-                    break;
-                case 'camera-down':
-                    feedback = 'Camera đang xoay xuống';
-                    break;
-                case 'zoom-in':
-                    feedback = 'Đang phóng to camera';
-                    break;
-                case 'zoom-out':
-                    feedback = 'Đang thu nhỏ camera';
                     break;
                 case 'patrol':
                     feedback = 'Đã kích hoạt chế độ tuần tra tự động';
@@ -2501,7 +2753,7 @@
         // Thêm hiệu ứng scroll animation
         document.addEventListener('DOMContentLoaded', function() {
             // Thêm class scroll-animate cho các phần tử cần animation
-            const animateElements = document.querySelectorAll('.feature-card, .detection-step, .pricing-card, .section-title');
+            const animateElements = document.querySelectorAll('.feature-card, .detection-step, .pricing-card, .section-title, .sensor-card');
             
             animateElements.forEach(element => {
                 element.classList.add('scroll-animate');
@@ -2524,6 +2776,11 @@
             
             // Kiểm tra khi scroll
             window.addEventListener('scroll', checkScroll);
+            
+            // Khởi động hệ thống DHT11
+            setInterval(updateDHT11Data, 5000);
+            updateDHT11Data();
+            setInterval(updateUptime, 1000);
             
             // Thêm animation cho bảng điều khiển
             const controlInterface = document.querySelector('.control-interface');
