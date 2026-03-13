@@ -1199,154 +1199,6 @@
             transform: scale(1.1);
         }
         
-        /* ========== PRICING SECTION ========== */
-        .pricing {
-            padding: 80px 0;
-            background-color: white;
-            position: relative;
-        }
-        
-        .pricing::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(to top, rgba(26, 115, 232, 0.05), transparent);
-            z-index: 0;
-        }
-        
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .pricing-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 40px 30px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: all var(--transition-fast);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .pricing-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            transform: translateY(-100%);
-            transition: transform var(--transition-medium);
-        }
-        
-        .pricing-card:hover::before {
-            transform: translateY(0);
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-        }
-        
-        .pricing-card.featured {
-            border-top: 5px solid var(--primary-color);
-            transform: scale(1.05);
-            animation: featuredCard 3s ease-in-out infinite;
-        }
-        
-        @keyframes featuredCard {
-            0%, 100% { transform: scale(1.05) translateY(0); }
-            50% { transform: scale(1.05) translateY(-5px); }
-        }
-        
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
-        }
-        
-        .featured-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--primary-color);
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            animation: badgePulse 2s infinite;
-        }
-        
-        @keyframes badgePulse {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.05); }
-        }
-        
-        .price {
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--dark-color);
-            margin: 20px 0;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .price::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
-            transform: scaleX(0);
-            transition: transform var(--transition-medium);
-        }
-        
-        .pricing-card:hover .price::after {
-            transform: scaleX(1);
-        }
-        
-        .price span {
-            font-size: 18px;
-            color: var(--gray-color);
-        }
-        
-        .pricing-features {
-            list-style: none;
-            margin: 30px 0;
-            text-align: left;
-        }
-        
-        .pricing-features li {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            transition: transform var(--transition-fast);
-        }
-        
-        .pricing-features li:hover {
-            transform: translateX(5px);
-        }
-        
-        .pricing-features i {
-            margin-right: 10px;
-            color: var(--secondary-color);
-        }
-        
-        .pricing-features i.fa-times {
-            color: var(--light-gray);
-        }
-        
         /* ========== FOOTER ========== */
         footer {
             background-color: var(--dark-color);
@@ -1593,15 +1445,6 @@
                 width: 100%;
             }
             
-            .pricing-card.featured {
-                transform: none;
-                animation: none;
-            }
-            
-            .pricing-card.featured:hover {
-                transform: translateY(-10px);
-            }
-            
             .control-grid {
                 grid-template-columns: 1fr;
             }
@@ -1642,7 +1485,7 @@
                 font-size: 28px;
             }
             
-            .features-grid, .pricing-cards {
+            .features-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -1675,12 +1518,8 @@
                 font-size: 24px;
             }
             
-            .feature-card, .pricing-card, .sensor-card {
+            .feature-card, .sensor-card {
                 padding: 20px;
-            }
-            
-            .price {
-                font-size: 36px;
             }
             
             .footer-content {
@@ -1739,7 +1578,6 @@
                     <li><a href="#detection">Phát hiện người lạ</a></li>
                     <li><a href="#control">Điều khiển</a></li>
                     <li><a href="#demo">Demo</a></li>
-                    <li><a href="#pricing">Bảng giá</a></li>
                     <li><a href="#contact">Liên hệ</a></li>
                 </ul>
                 
@@ -1759,7 +1597,7 @@
                     <p>AI GuardBot Pro kết hợp phát hiện người lạ bằng AI và giám sát môi trường với cảm biến DHT11. Bảo vệ toàn diện ngôi nhà của bạn 24/7.</p>
                     <div class="hero-buttons">
                         <a href="#demo" class="btn">Xem Demo Live</a>
-                        <a href="#pricing" class="btn btn-secondary">Đặt hàng ngay</a>
+                        <a href="#contact" class="btn btn-secondary">Liên hệ tư vấn</a>
                     </div>
                 </div>
                 
@@ -2158,61 +1996,6 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-title">
-                <h2>Bảng Giá</h2>
-                <p>Lựa chọn gói phù hợp với nhu cầu bảo vệ ngôi nhà của bạn</p>
-            </div>
-            
-            <div class="pricing-cards">
-                <div class="pricing-card">
-                    <h3>Cơ Bản</h3>
-                    <div class="price">5.990.000<span>đ</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> 1 Robot AI GuardBot</li>
-                        <li><i class="fas fa-check"></i> Nhận diện người lạ cơ bản</li>
-                        <li><i class="fas fa-check"></i> Cảm biến DHT11</li>
-                        <li><i class="fas fa-check"></i> Giám sát 2 khu vực</li>
-                        <li><i class="fas fa-times"></i> Điều khiển từ xa</li>
-                        <li><i class="fas fa-times"></i> Lưu trữ đám mây</li>
-                    </ul>
-                    <a href="#" class="btn">Đặt Mua</a>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <div class="featured-badge">Phổ Biến</div>
-                    <h3>Chuyên Nghiệp</h3>
-                    <div class="price">9.990.000<span>đ</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> 1 Robot AI GuardBot cao cấp</li>
-                        <li><i class="fas fa-check"></i> Nhận diện AI chính xác cao</li>
-                        <li><i class="fas fa-check"></i> Cảm biến DHT11 nâng cao</li>
-                        <li><i class="fas fa-check"></i> Điều khiển từ xa đầy đủ</li>
-                        <li><i class="fas fa-check"></i> Lưu trữ đám mây 30 ngày</li>
-                        <li><i class="fas fa-check"></i> Hỗ trợ kỹ thuật 24/7</li>
-                    </ul>
-                    <a href="#" class="btn">Đặt Mua</a>
-                </div>
-                
-                <div class="pricing-card">
-                    <h3>Gia Đình Cao Cấp</h3>
-                    <div class="price">16.990.000<span>đ</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> 2 Robot AI GuardBot</li>
-                        <li><i class="fas fa-check"></i> Nhận diện AI nâng cao</li>
-                        <li><i class="fas fa-check"></i> 3 Cảm biến DHT11</li>
-                        <li><i class="fas fa-check"></i> Điều khiển từ xa nâng cao</li>
-                        <li><i class="fas fa-check"></i> Lưu trữ đám mây 90 ngày</li>
-                        <li><i class="fas fa-check"></i> Hỗ trợ 24/7 & bảo hành 3 năm</li>
-                    </ul>
-                    <a href="#" class="btn">Đặt Mua</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -2237,7 +2020,7 @@
                         <li><a href="#detection">Phát hiện người lạ</a></li>
                         <li><a href="#control">Điều khiển</a></li>
                         <li><a href="#demo">Demo</a></li>
-                        <li><a href="#pricing">Bảng giá</a></li>
+                        <li><a href="#contact">Liên hệ</a></li>
                     </ul>
                 </div>
                 
@@ -2386,6 +2169,10 @@
                 document.getElementById('temperatureChart').style.display = 'none';
                 document.getElementById('humidityChart').style.display = 'block';
                 currentChart = 'humidity';
+            } else if (chartType === 'both') {
+                document.getElementById('temperatureChart').style.display = 'block';
+                document.getElementById('humidityChart').style.display = 'block';
+                currentChart = 'both';
             }
         }
         
@@ -2655,6 +2442,38 @@
             
             // Show notification
             showNotification(feedback);
+            
+            // Gửi lệnh đến Arduino (nếu có)
+            sendCommandToArduino(action);
+        }
+        
+        // Gửi lệnh đến Arduino qua API
+        function sendCommandToArduino(action) {
+            const commands = {
+                'forward': 'MOVE_FORWARD',
+                'back': 'MOVE_BACK',
+                'left': 'MOVE_LEFT',
+                'right': 'MOVE_RIGHT',
+                'patrol': 'PATROL_START',
+                'alarm': 'ALARM_ON'
+            };
+            
+            if (commands[action]) {
+                fetch('http://localhost:5000/api/control/robot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ action: action })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Phản hồi từ Arduino:', data);
+                })
+                .catch(error => {
+                    console.log('Không thể kết nối đến Arduino (đang chạy ở chế độ demo)');
+                });
+            }
         }
         
         // Speed control slider
@@ -2753,7 +2572,7 @@
         // Thêm hiệu ứng scroll animation
         document.addEventListener('DOMContentLoaded', function() {
             // Thêm class scroll-animate cho các phần tử cần animation
-            const animateElements = document.querySelectorAll('.feature-card, .detection-step, .pricing-card, .section-title, .sensor-card');
+            const animateElements = document.querySelectorAll('.feature-card, .detection-step, .section-title, .sensor-card');
             
             animateElements.forEach(element => {
                 element.classList.add('scroll-animate');
@@ -2790,6 +2609,11 @@
                     controlInterface.classList.add('visible');
                 }, 300);
             }
+            
+            // Cập nhật thời gian demo
+            setInterval(() => {
+                document.getElementById('demo-time').textContent = new Date().toLocaleTimeString();
+            }, 1000);
         });
     </script>
 </body>
